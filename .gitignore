@@ -1,0 +1,14 @@
+# Local development and release artifacts
+*.zip
+*.crx
+*.pem
+
+# Editor and operating-system state
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Never commit chat exports, private test material, or unpacked browser data
+downloads/
+screenshots/
+test-data/

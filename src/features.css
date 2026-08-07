@@ -1,0 +1,148 @@
+/* Feature-local styles. The legacy base stylesheet remains intentionally
+ * separate so each optional behaviour can be reviewed in one small module. */
+:root.elm-clean-mode .enhanced-elm-default-model,
+:root.elm-clean-mode .enhanced-elm-message-tool {
+  display: inline-grid;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--elm-clean-muted);
+  font-family: "Material Symbols Outlined", "Material Icons", sans-serif;
+  font-size: 18px;
+  line-height: 1;
+}
+
+:root.elm-clean-mode .enhanced-elm-default-model:hover,
+:root.elm-clean-mode .enhanced-elm-default-model:focus-visible,
+:root.elm-clean-mode .enhanced-elm-default-model-active {
+  background: var(--elm-clean-surface-subtle);
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode .enhanced-elm-library-search {
+  width: calc(100% - 16px);
+  height: 28px;
+  margin: 4px 8px 2px;
+  padding: 0 8px;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 6px;
+  background: var(--elm-clean-surface);
+  color: var(--elm-clean-ink);
+  font: inherit;
+  font-size: .72rem;
+}
+
+:root.elm-clean-mode .enhanced-elm-library-search:focus-visible {
+  outline: 2px solid var(--elm-clean-focus);
+  outline-offset: 1px;
+}
+
+:root.elm-clean-mode .enhanced-elm-message-tool {
+  position: relative;
+  z-index: 1;
+  margin: 4px 2px 0 0;
+  opacity: .72;
+}
+
+:root.elm-clean-mode .markdown-container:hover .enhanced-elm-message-tool,
+:root.elm-clean-mode .markdown-user:hover .enhanced-elm-message-tool,
+:root.elm-clean-mode .enhanced-elm-message-tool:focus-visible,
+:root.elm-clean-mode .enhanced-elm-message-tool:hover {
+  background: var(--elm-clean-surface-subtle);
+  color: var(--elm-clean-accent);
+  opacity: 1;
+}
+
+:root.elm-clean-mode pre .enhanced-elm-copy-code {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+:root.elm-clean-mode [data-enhanced-elm-math-repair] {
+  color: inherit;
+}
+
+:root.elm-clean-mode .enhanced-elm-math-display {
+  position: relative;
+  max-width: 100%;
+  margin: .6rem 0;
+  overflow-x: auto;
+}
+
+:root.elm-clean-mode [data-enhanced-elm-toast] {
+  position: fixed;
+  z-index: 100;
+  right: 20px;
+  bottom: 20px;
+  max-width: min(360px, calc(100vw - 40px));
+  padding: 8px 12px;
+  transform: translateY(12px);
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 8px;
+  background: var(--elm-clean-surface-raised);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 16%);
+  color: var(--elm-clean-ink);
+  font-size: .78rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+:root.elm-clean-mode [data-enhanced-elm-toast].enhanced-elm-toast-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+:root.elm-clean-mode .enhanced-elm-bookmark-list {
+  margin: 8px 4px 0;
+  padding-top: 6px;
+  border-top: 1px solid var(--elm-clean-line);
+}
+
+:root.elm-clean-mode .enhanced-elm-bookmark-list p {
+  margin: 0 4px 4px;
+  color: var(--elm-clean-muted);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+:root.elm-clean-mode .enhanced-elm-bookmark-list button {
+  display: block;
+  width: 100%;
+  padding: 4px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--elm-clean-ink);
+  font: inherit;
+  font-size: .7rem;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:root.elm-clean-mode .enhanced-elm-bookmark-list button:hover,
+:root.elm-clean-mode .enhanced-elm-bookmark-list button:focus-visible {
+  background: var(--elm-clean-surface-subtle);
+}
+
+:root.elm-clean-mode .enhanced-elm-bookmark-dialog textarea {
+  width: 100%;
+  min-height: 84px;
+  padding: 8px 9px;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 7px;
+  background: var(--elm-clean-surface);
+  color: var(--elm-clean-ink);
+  font: inherit;
+  font-size: .82rem;
+  resize: vertical;
+}

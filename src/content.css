@@ -1,0 +1,1118 @@
+/*
+ * Enhanced ELM adjusts presentation only. It deliberately does not replace
+ * Angular event handlers, intercept network traffic, or read chat contents.
+ */
+:root.elm-clean-mode {
+  --elm-clean-surface: #ffffff;
+  --elm-clean-canvas: #f4f6f4;
+  --elm-clean-surface-raised: #ffffff;
+  --elm-clean-surface-subtle: #edf3ef;
+  --elm-clean-ink: #17231f;
+  --elm-clean-muted: #5f6b65;
+  --elm-clean-line: #d9e1dc;
+  --elm-clean-accent: #1f5c4b;
+  --elm-clean-focus: #0b6b57;
+  --elm-clean-focus-ring: rgb(11 107 87 / 30%);
+  --elm-clean-user-surface: #edf3ef;
+  --elm-clean-system-surface: #f0f3f1;
+  --elm-clean-code-surface: #f7f9f7;
+  --elm-clean-web-active-surface: #e8f2ed;
+  --elm-clean-disabled-ink: #6f7973;
+  --elm-clean-composer-shadow: 0 10px 26px rgb(23 35 31 / 8%);
+  --elm-clean-sidebar-width: 272px;
+  --elm-clean-control-size: 40px;
+  --elm-clean-avatar-size: 40px;
+
+  /* Bridge ELM's Material components to the same semantic palette. */
+  --mat-sys-surface: var(--elm-clean-surface);
+  --mat-sys-surface-dim: var(--elm-clean-canvas);
+  --mat-sys-surface-container: var(--elm-clean-surface-raised);
+  --mat-sys-surface-container-low: var(--elm-clean-surface-raised);
+  --mat-sys-surface-container-high: var(--elm-clean-surface-subtle);
+  --mat-sys-on-surface: var(--elm-clean-ink);
+  --mat-sys-on-surface-variant: var(--elm-clean-muted);
+  --mat-sys-outline: var(--elm-clean-line);
+  --mat-sys-primary: var(--elm-clean-accent);
+  --mat-sys-on-primary: #f7fbf8;
+}
+
+/* ELM can follow the operating-system preference or apply its own dark-theme
+ * class. Both paths resolve to this one restrained, high-contrast palette. */
+:root.elm-clean-mode[data-theme="dark"],
+:root.elm-clean-mode[data-color-theme="dark"],
+:root.elm-clean-mode.dark-theme,
+:root.elm-clean-mode:has(body.dark-theme),
+:root.elm-clean-mode:has(body[data-theme="dark"]),
+:root.elm-clean-mode:has(body[data-color-theme="dark"]),
+:root.elm-clean-mode:has(body[class*="dark" i]) {
+  color-scheme: dark;
+  --elm-clean-surface: #18211d;
+  --elm-clean-canvas: #101612;
+  --elm-clean-surface-raised: #202a25;
+  --elm-clean-surface-subtle: #27332c;
+  --elm-clean-ink: #e8f0ea;
+  --elm-clean-muted: #adbbae;
+  --elm-clean-line: #3a493f;
+  --elm-clean-accent: #83c7a0;
+  --elm-clean-focus: #a3d8b7;
+  --elm-clean-focus-ring: rgb(163 216 183 / 38%);
+  --elm-clean-user-surface: #26372d;
+  --elm-clean-system-surface: #202a25;
+  --elm-clean-code-surface: #141b17;
+  --elm-clean-web-active-surface: #294634;
+  --elm-clean-disabled-ink: #7d8a81;
+  --elm-clean-composer-shadow: 0 10px 26px rgb(0 0 0 / 30%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.elm-clean-mode:not([data-theme="light"]):not([data-color-theme="light"]):not(.light-theme):not(:has(body.light-theme)):not(:has(body[data-theme="light"])) {
+    color-scheme: dark;
+    --elm-clean-surface: #18211d;
+    --elm-clean-canvas: #101612;
+    --elm-clean-surface-raised: #202a25;
+    --elm-clean-surface-subtle: #27332c;
+    --elm-clean-ink: #e8f0ea;
+    --elm-clean-muted: #adbbae;
+    --elm-clean-line: #3a493f;
+    --elm-clean-accent: #83c7a0;
+    --elm-clean-focus: #a3d8b7;
+    --elm-clean-focus-ring: rgb(163 216 183 / 38%);
+    --elm-clean-user-surface: #26372d;
+    --elm-clean-system-surface: #202a25;
+    --elm-clean-code-surface: #141b17;
+    --elm-clean-web-active-surface: #294634;
+    --elm-clean-disabled-ink: #7d8a81;
+    --elm-clean-composer-shadow: 0 10px 26px rgb(0 0 0 / 30%);
+  }
+}
+
+:root.elm-clean-mode body {
+  background: var(--elm-clean-canvas);
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode .mat-drawer-container,
+:root.elm-clean-mode .mat-drawer-content,
+:root.elm-clean-mode mat-drawer,
+:root.elm-clean-mode edh-elm-main,
+:root.elm-clean-mode edh-elm-main .main-container {
+  background-color: var(--elm-clean-canvas);
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode .mat-drawer,
+:root.elm-clean-mode [role="banner"] .mat-toolbar {
+  background-color: var(--elm-clean-surface-raised);
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode [role="banner"] {
+  min-height: 64px;
+  border-bottom: 1px solid var(--elm-clean-line);
+  box-shadow: none;
+}
+
+:root.elm-clean-mode main {
+  padding-block: 10px;
+}
+
+:root.elm-clean-mode [data-elm-clean-announcement] {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The application header is functionally useful, but its labels duplicate
+ * well-known icons. Buttons retain explicit ARIA and hover labels via the
+ * content script. */
+:root.elm-clean-mode header .mat-toolbar {
+  min-height: 56px;
+  height: 56px;
+  padding-inline: 16px;
+}
+
+:root.elm-clean-mode header .elm-logo {
+  width: 104px;
+  height: auto;
+}
+
+:root.elm-clean-mode header button:has(> .mdc-button__label) {
+  width: 40px;
+  min-width: 40px;
+  padding-inline: 0;
+}
+
+:root.elm-clean-mode header button:has(> .mdc-button__label) .mdc-button__label,
+:root.elm-clean-mode header edh-ui-switcher .mdc-label {
+  display: none;
+}
+
+:root.elm-clean-mode header button:has(> mat-icon) mat-icon {
+  margin: 0;
+}
+
+:root.elm-clean-hide-guidance [data-elm-clean-guidance],
+:root.elm-clean-hide-guidance [data-elm-clean-announcement] {
+  display: none !important;
+}
+
+/* The empty state inherits a deliberately generous 219px composer offset.
+ * Clean Mode keeps the welcome message but brings the next action into view. */
+:root.elm-clean-mode edh-intro section.elm {
+  gap: 4px;
+  padding: 0;
+}
+
+:root.elm-clean-mode edh-intro h2 {
+  margin: 0;
+  font-size: clamp(1.65rem, 2.4vw, 2.2rem);
+  line-height: 1.1;
+}
+
+:root.elm-clean-mode edh-intro p {
+  margin: 0;
+  color: var(--elm-clean-muted);
+}
+
+:root.elm-clean-mode edh-elm-main .main-container > edh-elm-input {
+  margin-top: clamp(24px, 5vh, 56px) !important;
+}
+
+/* ELM centres its empty composer and leaves a second, blank scroll region
+ * below it. Clean Mode keeps the welcome at the top and pins the next action
+ * to the bottom of the available workspace instead. */
+:root.elm-clean-mode:has(edh-elm-main edh-intro) body {
+  overflow-y: hidden;
+}
+
+:root.elm-clean-mode edh-elm-main .main-container:has(edh-intro) > edh-elm-input {
+  margin-top: auto !important;
+}
+
+/* Once a reply exists, the composer should follow the conversation rather
+ * than preserve the roomy empty-state rhythm. */
+:root.elm-clean-mode edh-elm-main .main-container:has(edh-elm-query .response) > edh-elm-input {
+  margin-top: 12px !important;
+}
+
+/* Keep the existing menu and title-only history list, but give the workspace
+ * more reading room. Angular Material otherwise mirrors the 380px drawer as
+ * an inline margin on its content surface. */
+:root.elm-clean-mode mat-drawer.elm-sidebar {
+  width: var(--elm-clean-sidebar-width) !important;
+}
+
+/* The collapsed drawer must release its layout slot. Keeping a fixed content
+ * margin here is what creates the unused grey rail after pressing Tools. */
+:root.elm-clean-mode .mat-drawer-container > .mat-drawer-content {
+  margin-left: 0 !important;
+}
+
+/* ELM already gives edh-elm-query its own conversation scrollbar. Letting the
+ * enclosing drawer content scroll as well exposes the query's overflow as a
+ * blank area below the composer, especially on a fresh chat. */
+:root.elm-clean-mode .mat-drawer-content:has(edh-elm-query),
+:root.elm-clean-mode .mat-mdc-card.elm-card-container:has(edh-elm-query) {
+  overflow-y: hidden !important;
+}
+
+/* `hidden` prevents user scrolling but still permits focus() to scroll the
+ * card. Material does that when its native model menu closes, which shifts the
+ * entire conversation upward and exposes a false blank region below the
+ * composer. `clip` removes that outer scrollport completely. */
+:root.elm-clean-mode .mat-mdc-card.elm-card-container:has(edh-elm-query) {
+  overflow-y: clip !important;
+}
+
+:root.elm-clean-mode .mat-drawer-content:has(edh-elm-query) {
+  overscroll-behavior-y: none;
+}
+
+/* The model list remains ELM's native Material menu, but it now scrolls in an
+ * isolated, bounded panel. Its size can no longer affect the chat workspace. */
+:root.elm-clean-mode .model-mat-menu,
+:root.elm-clean-mode .model-mat-menu .mat-mdc-menu-content {
+  max-height: min(360px, calc(100dvh - 136px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* A new chat may contain only an informational row. It is not a conversation
+ * yet, so it must not expose an empty internal scrollbar beneath the composer. */
+:root.elm-clean-mode edh-elm-query:not(:has(.response.response-ai)) {
+  overflow-y: hidden !important;
+  overscroll-behavior-y: none;
+}
+
+:root.elm-clean-mode .mat-drawer-container:has(> mat-drawer.elm-sidebar.mat-drawer-opened) > .mat-drawer-content {
+  margin-left: var(--elm-clean-sidebar-width) !important;
+}
+
+:root.elm-clean-mode .mat-drawer-container:has(> mat-drawer.elm-sidebar:not(.mat-drawer-opened)) edh-elm-new-footer,
+:root.elm-clean-mode .mat-drawer-container:has(> mat-drawer.elm-sidebar:not(.mat-drawer-opened)) mat-drawer img[src*="uoe_logo"] {
+  display: none;
+}
+
+/* With the sidebar hidden, use the recovered space for the conversation,
+ * rather than simply centring the previous narrow column in a wider canvas. */
+:root.elm-clean-mode .mat-drawer-container:has(> mat-drawer.elm-sidebar:not(.mat-drawer-opened)) edh-elm-input .query-form-container {
+  width: min(100% - 48px, 1120px) !important;
+}
+
+:root.elm-clean-compact-conversation .mat-drawer-container:has(> mat-drawer.elm-sidebar:not(.mat-drawer-opened)) edh-elm-query .response-container {
+  max-width: min(1120px, calc(100% - 48px));
+}
+
+/* Remove institutional artwork from the working surface. ELM itself remains
+ * clearly identified by its header logo. The navigation becomes four labelled
+ * icon buttons, leaving the sidebar for chat titles. */
+:root.elm-clean-mode mat-drawer .edina-logo-container,
+:root.elm-clean-mode mat-drawer img[src*="edina_logo"] {
+  display: none;
+}
+
+/* Make the sidebar a true column. Its history can scroll independently while
+ * Library and the institutional footer retain their place in normal layout. */
+:root.elm-clean-mode mat-drawer.elm-sidebar .mat-drawer-inner-container,
+:root.elm-clean-mode mat-drawer.elm-sidebar .sidemenu-container {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+:root.elm-clean-mode mat-drawer.elm-sidebar .sidemenu-container {
+  display: flex;
+  flex-direction: column;
+}
+
+:root.elm-clean-mode mat-drawer.elm-sidebar edh-elm-chat-history-menu-view {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto !important;
+}
+
+/* The actual University mark and ELM notice are relocated here by the content
+ * script. Because this is part of the sidebar flex column, it is always flush
+ * with the bottom edge and never overlaps Library actions or saved chats. */
+:root.elm-clean-mode [data-elm-clean-sidebar-footer] {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px 12px;
+  border-top: 1px solid var(--elm-clean-line);
+}
+
+:root.elm-clean-mode [data-elm-clean-sidebar-footer] img[src*="uoe_logo"] {
+  position: static;
+  display: block;
+  width: min(176px, calc(var(--elm-clean-sidebar-width) - 24px));
+  height: auto;
+  margin: 0;
+  opacity: 0.82;
+}
+
+:root.elm-clean-mode [data-elm-clean-sidebar-footer] edh-elm-new-footer {
+  position: static;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--elm-clean-muted);
+  font-size: 0.61rem;
+  line-height: 1.3;
+  text-align: left;
+}
+
+:root.elm-clean-mode [data-elm-clean-sidebar-footer] edh-elm-new-footer .lower-header {
+  display: block;
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+:root.elm-clean-mode mat-drawer mat-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin: 6px 8px 10px;
+  padding: 0;
+}
+
+:root.elm-clean-mode mat-drawer mat-list > mat-list-item {
+  width: 40px;
+  min-height: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+:root.elm-clean-mode mat-drawer mat-list > mat-list-item .mdc-list-item__content,
+:root.elm-clean-mode mat-drawer mat-list > mat-list-item button {
+  display: grid;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  place-items: center;
+}
+
+:root.elm-clean-mode mat-drawer mat-list > mat-list-item .mdc-button__label {
+  display: none;
+}
+
+:root.elm-clean-mode mat-drawer .recent-chats-container {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--elm-clean-line);
+}
+
+:root.elm-clean-mode mat-drawer .history-title {
+  margin: 0;
+  padding: 0 12px 4px;
+  color: var(--elm-clean-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:root.elm-clean-mode edh-elm-chat-history-menu-view .mat-mdc-subheader {
+  display: none;
+}
+
+:root.elm-clean-mode edh-elm-input .query-form-container {
+  width: min(100% - 32px, 980px) !important;
+  margin: 8px auto 12px !important;
+}
+
+:root.elm-clean-mode edh-elm-input .query-form {
+  gap: 4px;
+  padding: 8px 10px !important;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 12px;
+  background: var(--elm-clean-surface-raised);
+  box-shadow: var(--elm-clean-composer-shadow);
+}
+
+:root.elm-clean-mode edh-elm-input .mat-mdc-text-field-wrapper,
+:root.elm-clean-mode edh-elm-input .mat-mdc-form-field-focus-overlay {
+  background: transparent !important;
+}
+
+/* The outer composer already provides the field boundary. Suppress Material's
+ * second focused outline so clicking Ask ELM anything does not draw a green
+ * box inside the white composer. Keyboard focus remains available on controls. */
+:root.elm-clean-mode edh-elm-input .query-form-field .mdc-notched-outline,
+:root.elm-clean-mode edh-elm-input .query-form-field .mdc-notched-outline__leading,
+:root.elm-clean-mode edh-elm-input .query-form-field .mdc-notched-outline__notch,
+:root.elm-clean-mode edh-elm-input .query-form-field .mdc-notched-outline__trailing {
+  border-color: transparent !important;
+}
+
+:root.elm-clean-mode edh-elm-input .query-form-field.mat-focused .mat-mdc-form-field-focus-overlay {
+  opacity: 0 !important;
+}
+
+:root.elm-clean-mode edh-elm-input .query-form:has(#main:focus) {
+  border-color: var(--elm-clean-line);
+}
+
+:root.elm-clean-mode edh-elm-input .query-form-field {
+  margin-bottom: 0;
+  height: 52px;
+}
+
+:root.elm-clean-mode edh-elm-input .mat-mdc-text-field-wrapper {
+  height: 52px;
+}
+
+:root.elm-clean-mode edh-elm-input .mat-mdc-form-field-infix {
+  min-height: 52px;
+  padding-block: 4px;
+}
+
+:root.elm-clean-mode edh-elm-input .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+/* The native Material label floats over the reduced-height field. Use the
+ * textarea placeholder instead, so the prompt sits inside its own line. */
+:root.elm-clean-mode edh-elm-input .query-form-field mat-label {
+  display: none;
+}
+
+:root.elm-clean-mode edh-elm-input #main::placeholder {
+  color: var(--elm-clean-muted);
+  opacity: 1;
+}
+
+:root.elm-clean-mode edh-elm-input #main {
+  min-height: 44px;
+  max-height: 160px;
+  line-height: 1.4;
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode edh-elm-input .chat-input-under-box,
+:root.elm-clean-mode edh-elm-input .chat-buttons-container {
+  min-height: 40px;
+  height: 40px;
+  gap: 4px;
+}
+
+:root.elm-clean-mode edh-elm-input .chat-buttons-container {
+  margin: 0;
+}
+
+/* Model selection is a compact Family → Model → Effort group. The family
+ * picker filters ELM's own menu; it does not replace ELM's model-selection
+ * event handler. */
+:root.elm-clean-mode .elm-clean-model-controls {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+:root.elm-clean-mode .elm-clean-family-select,
+:root.elm-clean-mode .elm-clean-model-controls {
+  height: var(--elm-clean-control-size);
+}
+
+:root.elm-clean-mode .elm-clean-family-select {
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 8px;
+  background: var(--elm-clean-surface);
+  color: var(--elm-clean-ink);
+  font: inherit;
+  font-size: 0.82rem;
+  /* 118px keeps the longest current family name, "Anthropic", intact while
+   * preserving the compact rhythm of the 40px icon controls beside it. */
+  width: 118px;
+  padding: 0 24px 0 10px;
+}
+
+:root.elm-clean-mode edh-elm-input button[data-elm-clean-model-control] .mdc-button__label {
+  display: none;
+}
+
+:root.elm-clean-mode edh-elm-input button[data-elm-clean-model-control]::after {
+  content: attr(data-elm-clean-model-short-name);
+  margin-left: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:root.elm-clean-mode .elm-clean-hidden-model-family {
+  display: none !important;
+}
+
+/* Material buttons reserve a right icon margin even after their text labels
+ * are hidden. A grid cell then centres the icon-plus-margin, not the glyph. */
+:root.elm-clean-mode mat-drawer mat-list > mat-list-item button mat-icon,
+:root.elm-clean-mode edh-elm-input button[aria-label="Select prompt"] mat-icon,
+:root.elm-clean-mode edh-elm-input button[aria-label*="Web"] mat-icon,
+:root.elm-clean-mode edh-elm-input button[aria-label="Attach a file dropdown button"] mat-icon {
+  margin: 0 !important;
+  place-self: center;
+}
+
+/* Prompt choice and web search are useful secondary controls. Their icons,
+ * hover label, and screen-reader name suffice; the selected model stays
+ * textual because it is the important persistent choice. */
+:root.elm-clean-mode edh-elm-input button[aria-label="Select prompt"],
+:root.elm-clean-mode edh-elm-input button[aria-label*="Web"],
+:root.elm-clean-mode edh-elm-input button[aria-label="Attach a file dropdown button"] {
+  width: var(--elm-clean-control-size);
+  min-width: var(--elm-clean-control-size);
+  padding-inline: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:root.elm-clean-mode edh-elm-input button[aria-label="Select prompt"] .mdc-button__label,
+  :root.elm-clean-mode edh-elm-input button[aria-label*="Web"] .mdc-button__label {
+  display: none;
+}
+
+:root.elm-clean-mode edh-elm-input button,
+:root.elm-clean-mode edh-elm-query button {
+  border-radius: 8px;
+}
+
+/* Interactive controls and conversation identity share a 40px rhythm. The
+ * icon glyph itself remains smaller inside that stable visual container. */
+:root.elm-clean-compact-conversation edh-elm-query .response-icon,
+:root.elm-clean-compact-conversation edh-elm-query .response-icon svg-icon,
+:root.elm-clean-compact-conversation edh-elm-query .response-icon .chat-icons {
+  width: var(--elm-clean-avatar-size) !important;
+  height: var(--elm-clean-avatar-size) !important;
+  flex: 0 0 var(--elm-clean-avatar-size);
+}
+
+:root.elm-clean-mode edh-elm-input button:focus-visible,
+:root.elm-clean-mode edh-elm-query button:focus-visible,
+:root.elm-clean-mode edh-elm-input textarea:focus-visible {
+  outline: 3px solid var(--elm-clean-focus-ring);
+  outline-offset: 2px;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .query-response {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .chat-history {
+  margin-bottom: 8px;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response-container {
+  max-width: min(940px, calc(100% - 32px));
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response {
+  gap: 8px;
+  padding: 0 4px;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response .markdown {
+  margin: 8px 10px;
+  color: var(--elm-clean-ink);
+  line-height: 1.55;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response .markdown-user {
+  max-width: min(78%, 720px);
+  padding: 6px 12px;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 12px 4px 12px 12px;
+  background: var(--elm-clean-user-surface);
+}
+
+/* The outer user-message container has a fixed right edge, but its bubble
+ * used to remain left-aligned inside it. Anchor every bubble to the same
+ * edge so short system messages and long prompts line up. */
+:root.elm-clean-compact-conversation edh-elm-query .response:not(.response-ai) .markdown-container {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response:not(.response-ai) .markdown-user {
+  margin-left: auto;
+}
+
+/* Informational events such as “Cleared selected documents” are generated by
+ * ELM, not authored by the user. Render them as a small neutral event instead
+ * of a second right-aligned user bubble. */
+:root.elm-clean-compact-conversation edh-elm-query .response[data-elm-clean-system-message] {
+  justify-content: center;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response[data-elm-clean-system-message] .response-icon {
+  display: none;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response[data-elm-clean-system-message] .markdown-container {
+  display: block;
+  flex: 0 1 auto;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response[data-elm-clean-system-message] .markdown-user {
+  max-width: none;
+  margin: 4px auto;
+  padding: 4px 10px;
+  border-color: transparent;
+  border-radius: 999px;
+  background: var(--elm-clean-system-surface);
+  color: var(--elm-clean-muted);
+  font-size: 0.82rem;
+}
+
+/* Removing an active-state background must not leave the Web Search symbol
+ * white. Keep the icon visible in both selected and unselected states. */
+:root.elm-clean-mode edh-elm-input button[aria-label^="Enable Web"] {
+  position: relative;
+  color: var(--elm-clean-disabled-ink) !important;
+}
+
+:root.elm-clean-mode edh-elm-input button[aria-label^="Enable Web"] mat-icon {
+  color: inherit !important;
+}
+
+:root.elm-clean-mode edh-elm-input button[aria-label^="Enable Web"]::after {
+  position: absolute;
+  top: 19px;
+  left: 9px;
+  width: 22px;
+  height: 1.5px;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  background: currentcolor;
+  content: "";
+}
+
+:root.elm-clean-mode edh-elm-input button[aria-label^="Disable Web"] {
+  border-radius: 50%;
+  background: var(--elm-clean-web-active-surface);
+  color: var(--elm-clean-accent) !important;
+}
+
+:root.elm-clean-mode edh-elm-input button[aria-label^="Disable Web"] mat-icon {
+  color: inherit !important;
+}
+
+/* KaTeX is supplied by ELM. Keep valid inline math on the text baseline and
+ * prevent wider display equations from forcing horizontal page overflow. */
+:root.elm-clean-compact-conversation edh-elm-query .katex {
+  font-size: 1em;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .katex-display {
+  margin: 10px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* ELM already renders user rows right-aligned and .response-ai rows left-aligned.
+ * These rules retain that semantic orientation while reducing visual distance. */
+:root.elm-clean-compact-conversation edh-elm-query .response:not(.response-ai) {
+  flex-direction: row-reverse;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .response.response-ai {
+  flex-direction: row;
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .markdown pre {
+  margin-block: 8px;
+  padding: 10px;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 8px;
+  background: var(--elm-clean-code-surface);
+  overflow: auto;
+}
+
+/* ELM's markdown arrives with a mixture of browser and Material defaults.
+ * Restating the text hierarchy here prevents light-mode black from leaking
+ * into a dark reply, while retaining ELM's native Markdown semantics. */
+:root.elm-clean-compact-conversation edh-elm-query .markdown :is(h1, h2, h3, h4, h5, h6, p, li, strong, em, td, th),
+:root.elm-clean-compact-conversation edh-elm-query .markdown-user {
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .markdown a {
+  color: var(--elm-clean-focus);
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .markdown blockquote {
+  margin-inline: 0;
+  border-inline-start-color: var(--elm-clean-accent);
+  background: var(--elm-clean-surface-subtle);
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-compact-conversation edh-elm-query .markdown :not(pre) > code {
+  border-radius: 4px;
+  background: var(--elm-clean-code-surface);
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode ::selection {
+  background: var(--elm-clean-web-active-surface);
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-compact-conversation edh-elm-chat-history-menu-view [role="option"] {
+  min-height: 36px;
+  padding: 0 8px;
+}
+
+/* In ELM's current template `Chat Summary` contains the chat title itself.
+ * Keep it visible, ellipsized, and paired with a small visual chat cue. */
+:root.elm-clean-compact-conversation edh-elm-chat-history-menu-view .chat-item-content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+
+:root.elm-clean-compact-conversation edh-elm-chat-history-menu-view .chat-item-content::before {
+  color: var(--elm-clean-muted);
+  content: "chat_bubble_outline";
+  font-family: "Material Symbols Outlined", "Material Icons";
+  font-size: 16px;
+}
+
+:root.elm-clean-compact-conversation edh-elm-chat-history-menu-view .chat-summary {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Local snapshots sit beneath ELM's own recent-chat list. They are deliberately
+ * title-first: folders and tags are secondary metadata, not a second sidebar. */
+:root.elm-clean-mode [data-elm-clean-library] {
+  flex: 0 1 auto;
+  max-height: min(30vh, 260px);
+  margin: 8px;
+  overflow-y: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--elm-clean-line);
+}
+
+:root.elm-clean-mode .elm-clean-library-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  padding: 0 4px 0 8px;
+  color: var(--elm-clean-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+:root.elm-clean-mode .elm-clean-library-actions {
+  display: inline-flex;
+  gap: 2px;
+}
+
+:root.elm-clean-mode .elm-clean-library-actions button,
+:root.elm-clean-mode .elm-clean-library-dialog button,
+:root.elm-clean-mode .elm-clean-formula-copy {
+  font-family: "Material Symbols Outlined", "Material Icons", sans-serif;
+}
+
+:root.elm-clean-mode .elm-clean-library-actions button {
+  display: grid;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--elm-clean-muted);
+  font-size: 18px;
+}
+
+:root.elm-clean-mode .elm-clean-library-actions button:hover,
+:root.elm-clean-mode .elm-clean-library-actions button:focus-visible {
+  background: var(--elm-clean-surface-subtle);
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode .elm-clean-library-empty {
+  margin: 4px 8px;
+  color: var(--elm-clean-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+:root.elm-clean-mode .elm-clean-library-row {
+  display: grid;
+  width: 100%;
+  min-height: 34px;
+  padding: 4px 8px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--elm-clean-ink);
+  text-align: left;
+}
+
+:root.elm-clean-mode .elm-clean-library-row:hover,
+:root.elm-clean-mode .elm-clean-library-row:focus-visible {
+  background: var(--elm-clean-surface-subtle);
+}
+
+:root.elm-clean-mode .elm-clean-library-row span,
+:root.elm-clean-mode .elm-clean-library-row small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:root.elm-clean-mode .elm-clean-library-row span {
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+:root.elm-clean-mode .elm-clean-library-row small {
+  color: var(--elm-clean-muted);
+  font-size: 0.67rem;
+  line-height: 1.2;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] {
+  position: fixed;
+  z-index: 4;
+  top: 50%;
+  right: 10px;
+  display: grid;
+  max-height: min(52vh, 360px);
+  padding: 3px;
+  overflow-y: auto;
+  transform: translateY(-50%);
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 10px;
+  background: var(--elm-clean-surface-raised);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 12%);
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] button {
+  display: grid;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--elm-clean-muted);
+  font-size: 0.66rem;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] button:hover,
+:root.elm-clean-mode [data-elm-clean-timeline] button:focus-visible {
+  background: var(--elm-clean-surface-subtle);
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-user {
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode .katex-display {
+  position: relative;
+}
+
+:root.elm-clean-mode .elm-clean-formula-copy {
+  display: inline-grid;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 3px;
+  padding: 0;
+  vertical-align: middle;
+  place-items: center;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--elm-clean-muted);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0;
+}
+
+:root.elm-clean-mode .katex-display > .elm-clean-formula-copy {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  margin: 0;
+}
+
+:root.elm-clean-mode .katex:hover > .elm-clean-formula-copy,
+:root.elm-clean-mode .katex:focus-within > .elm-clean-formula-copy,
+:root.elm-clean-mode .katex-display:hover > .elm-clean-formula-copy,
+:root.elm-clean-mode .elm-clean-formula-copy:focus-visible {
+  opacity: 1;
+}
+
+:root.elm-clean-mode .elm-clean-formula-copy:hover,
+:root.elm-clean-mode .elm-clean-formula-copy:focus-visible {
+  background: var(--elm-clean-surface-subtle);
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode [data-elm-clean-toast] {
+  position: fixed;
+  z-index: 100;
+  right: 20px;
+  bottom: 20px;
+  max-width: min(360px, calc(100vw - 40px));
+  padding: 8px 12px;
+  transform: translateY(12px);
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 8px;
+  background: var(--elm-clean-surface-raised);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 16%);
+  color: var(--elm-clean-ink);
+  font-size: 0.78rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+:root.elm-clean-mode [data-elm-clean-toast].elm-clean-toast-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog {
+  width: min(420px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 12px;
+  background: var(--elm-clean-surface-raised);
+  color: var(--elm-clean-ink);
+  box-shadow: 0 20px 54px rgb(0 0 0 / 28%);
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog::backdrop {
+  background: rgb(8 14 10 / 48%);
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog-card {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 16px;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog h2,
+:root.elm-clean-mode .elm-clean-library-dialog p {
+  margin: 0;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog h2 {
+  font-size: 1rem;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog-title p,
+:root.elm-clean-mode .elm-clean-library-dialog-note {
+  margin-top: 3px;
+  color: var(--elm-clean-muted);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog label {
+  display: grid;
+  gap: 5px;
+  color: var(--elm-clean-ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog label small {
+  color: var(--elm-clean-muted);
+  font-weight: 400;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog input,
+:root.elm-clean-mode .elm-clean-library-dialog select {
+  width: 100%;
+  min-height: 36px;
+  padding: 0 9px;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 7px;
+  background: var(--elm-clean-surface);
+  color: var(--elm-clean-ink);
+  font: inherit;
+}
+
+:root.elm-clean-mode .elm-clean-library-new-folder {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog button {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 7px;
+  background: var(--elm-clean-surface);
+  color: var(--elm-clean-ink);
+  font-family: inherit;
+  font-size: 0.78rem;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog-title > button {
+  display: grid;
+  width: 30px;
+  min-width: 30px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--elm-clean-muted);
+  font-family: "Material Symbols Outlined", "Material Icons", sans-serif;
+  font-size: 19px;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog .elm-clean-primary {
+  border-color: var(--elm-clean-accent);
+  background: var(--elm-clean-accent);
+  color: #f7fbf8;
+}
+
+:root.elm-clean-mode .elm-clean-library-dialog input:focus-visible,
+:root.elm-clean-mode .elm-clean-library-dialog select:focus-visible,
+:root.elm-clean-mode .elm-clean-library-dialog button:focus-visible {
+  outline: 3px solid var(--elm-clean-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  :root.elm-clean-mode main {
+    padding-block: 8px;
+  }
+
+  :root.elm-clean-mode mat-drawer.elm-sidebar {
+    width: min(var(--elm-clean-sidebar-width), 82vw) !important;
+  }
+
+  :root.elm-clean-mode .mat-drawer-container:has(> mat-drawer.elm-sidebar.mat-drawer-opened) > .mat-drawer-content {
+    margin-left: min(var(--elm-clean-sidebar-width), 82vw) !important;
+  }
+
+  :root.elm-clean-mode [data-elm-clean-sidebar-footer] {
+    padding-inline: 12px;
+  }
+
+  :root.elm-clean-mode edh-elm-input .query-form-container {
+    width: calc(100% - 16px) !important;
+    margin-bottom: 8px !important;
+  }
+
+  :root.elm-clean-compact-conversation edh-elm-query .response-container {
+    max-width: calc(100% - 16px);
+  }
+
+  :root.elm-clean-compact-conversation edh-elm-query .response .markdown-user {
+    max-width: 88%;
+  }
+
+  :root.elm-clean-mode [data-elm-clean-timeline] {
+    display: none;
+  }
+}

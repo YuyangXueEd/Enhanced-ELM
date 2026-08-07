@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enhanced ELM</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="mark" aria-hidden="true">E</div>
+        <div>
+          <h1>Enhanced ELM</h1>
+          <p>Local ELM workspace settings</p>
+        </div>
+      </header>
+
+      <section aria-label="Appearance settings">
+        <p class="compatibility-note"><strong>ELM New look required</strong><br />Switch ELM to <em>New look</em>, then refresh this page.</p>
+        <label class="setting-row" for="enabled">
+          <span>
+            <strong>Enable Enhanced ELM</strong>
+            <small>Apply the compact workspace on ELM.</small>
+          </span>
+          <input id="enabled" type="checkbox" role="switch" />
+        </label>
+
+        <label class="setting-row" for="hideGuidance">
+          <span>
+            <strong>Hide guidance &amp; notices</strong>
+            <small>Remove onboarding cards and the long service notice.</small>
+          </span>
+          <input id="hideGuidance" type="checkbox" role="switch" />
+        </label>
+
+        <label class="setting-row" for="mathRepair">
+          <span>
+            <strong>Repair mathematics</strong>
+            <small>Render safe, recoverable LaTeX fragments with KaTeX.</small>
+          </span>
+          <input id="mathRepair" type="checkbox" role="switch" />
+        </label>
+
+        <label class="setting-row" for="markdownTools">
+          <span>
+            <strong>Markdown tools</strong>
+            <small>Add Markdown and code-copy controls to messages.</small>
+          </span>
+          <input id="markdownTools" type="checkbox" role="switch" />
+        </label>
+      </section>
+
+      <footer>All preferences and saved workspace data stay in this browser.</footer>
+    </main>
+    <script src="../shared/settings.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

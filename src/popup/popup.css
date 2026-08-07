@@ -1,0 +1,97 @@
+:root {
+  color: #17231f;
+  background: #f4f6f4;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 344px;
+  margin: 0;
+}
+
+main { padding: 18px; }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #d9e1dc;
+}
+
+.mark {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 9px;
+  background: #1f5c4b;
+  color: #fff;
+  font-weight: 700;
+}
+
+h1, p { margin: 0; }
+h1 { font-size: 15px; letter-spacing: -0.01em; }
+header p, footer, small { color: #5f6b65; }
+header p { margin-top: 2px; font-size: 12px; }
+
+section { padding-top: 6px; }
+
+.compatibility-note {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border: 1px solid #d9e1dc;
+  border-radius: 8px;
+  background: #edf3ef;
+  color: #365247;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.compatibility-note strong { display: inline; font-size: 11px; }
+.compatibility-note em { font-style: normal; font-weight: 700; }
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 68px;
+  border-bottom: 1px solid #d9e1dc;
+  cursor: pointer;
+}
+
+strong, small { display: block; }
+strong { font-size: 13px; }
+small { margin-top: 3px; font-size: 12px; line-height: 1.35; }
+
+input[role="switch"] {
+  width: 38px;
+  height: 22px;
+  margin: 0;
+  appearance: none;
+  border: 1px solid #aab8b0;
+  border-radius: 999px;
+  background: #d9e1dc;
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+input[role="switch"]::after {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 2px;
+  border-radius: 50%;
+  background: #fff;
+  content: "";
+  transition: transform 150ms ease;
+}
+
+input[role="switch"]:checked { background: #1f5c4b; border-color: #1f5c4b; }
+input[role="switch"]:checked::after { transform: translateX(16px); }
+input[role="switch"]:focus-visible { outline: 3px solid rgb(11 107 87 / 28%); outline-offset: 2px; }
+
+footer { padding-top: 12px; font-size: 11px; line-height: 1.4; }
