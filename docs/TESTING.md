@@ -18,7 +18,7 @@ Get-ChildItem -Recurse -File src -Filter *.js |
 - Toggle Enhanced ELM, Math Repair, Markdown tools, and guidance hiding from the popup; refresh after each important state change.
 - In light and dark ELM themes, check readable text, disabled web search, selected web search, code blocks, and the composer.
 - Open and close the sidebar. In the closed state, the reading column and composer should use the recovered width with no grey rail.
-- Start a new chat. The composer should remain at the bottom with no blank page scroll below it.
+- Start a new chat and select a document without sending a prompt. In both states, the composer must remain at the bottom with no blank page scroll below it.
 - Open a long model list. Change the Family field; ELM should choose the first native model in that family and the outer chat card must not scroll.
 - Pin a model with the star button, refresh, and confirm the exact available native model is selected once. Clear the star to remove the preference.
 - Send a message containing headings, a list, a link, a code block, inline math, and display math. Copy a message, code, and LaTeX; download the full conversation Markdown and inspect the file.

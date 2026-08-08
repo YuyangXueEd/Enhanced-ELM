@@ -195,6 +195,34 @@
   margin-top: 12px !important;
 }
 
+/* ELM's "selected documents" event creates a query component without a normal
+ * `.response` row. The earlier response-only rule then fell back to ELM's
+ * vertically centred new-chat layout. Own the main vertical rhythm instead:
+ * the query gets the flexible reading area and the composer always occupies
+ * the bottom edge, whether the chat is empty, has files, or has replies. */
+:root.elm-clean-mode edh-elm-main,
+:root.elm-clean-mode edh-elm-main .main-container {
+  min-height: 0;
+}
+
+:root.elm-clean-mode edh-elm-main .main-container:has(> edh-elm-input) {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100%;
+  min-height: calc(100dvh - 56px);
+  justify-content: flex-start !important;
+}
+
+:root.elm-clean-mode edh-elm-main .main-container:has(> edh-elm-input) > edh-elm-query {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+:root.elm-clean-mode edh-elm-main .main-container:has(> edh-elm-input) > edh-elm-input {
+  flex: 0 0 auto;
+  margin-top: auto !important;
+}
+
 /* Keep the existing menu and title-only history list, but give the workspace
  * more reading room. Angular Material otherwise mirrors the 380px drawer as
  * an inline margin on its content surface. */
