@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Enhanced ELM",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A local-first productivity enhancement for ELM New look conversations.",
   "permissions": ["storage"],
   "host_permissions": ["https://elm.edina.ac.uk/*"],
@@ -35,6 +35,7 @@
         "src/features/model-controls.js",
         "src/features/math-repair.js",
         "src/features/markdown-tools.js",
+        "src/features/attachment-dock.js",
         "src/features/workspace-library.js",
         "src/features/bookmarks.js",
         "src/features/timeline.js",

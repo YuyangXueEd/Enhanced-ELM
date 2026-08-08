@@ -1,4 +1,4 @@
-# 0.1.0 code review
+# 0.1.1 code review
 
 Reviewed: 7 August 2026
 
@@ -13,6 +13,7 @@ Reviewed: 7 August 2026
 | User actions shared unclear storage ownership. | `workspace-store.js` is the single writer for folders, snapshots, bookmarks, and notes. |
 | Extension disable could leave model observer state disconnected. | Model feature now resets/reconnects its observer state on the next enable. |
 | Clearing a model preference attempted to store `undefined`. | Uses `chrome.storage.local.remove` through the shared storage helper. |
+| Attached files reserved a large full-width row beneath the composer. | Keeps ELM's native file widget and View All action, but docks it as a count-badged lower-right hover/focus popup outside normal layout. |
 
 ## Checks completed
 

@@ -16,6 +16,7 @@ Enhanced ELM gives ELM **New look** a compact, readable workspace without replac
 | Model workflow | A **Family → ELM model** workflow. Switching family selects its first native model; ELM still owns the actual model menu and any reasoning-effort option. Pin the current model as the local default. |
 | Math Repair | Conservative KaTeX rendering for complete recoverable LaTeX, code-wrapped formulas, double-escaped commands, and the observed split Celsius-range defect. Copy the resulting LaTeX source. |
 | Local library | Explicit, user-saved Markdown snapshots with folders, tags, search, and download. No silent conversation mirroring. |
+| Attachments | A count-badged lower-right paperclip dock. The native attachment summary opens on hover, focus, or click instead of reserving a full row below the composer. |
 | Key messages | Bookmark a message, add a local note, and jump back to it from the sidebar. |
 | Markdown tools | Copy an individual message as Markdown, copy code blocks, and download the current visible conversation as a Markdown file. |
 | Navigation | A compact desktop timeline for jumping through the visible conversation. |

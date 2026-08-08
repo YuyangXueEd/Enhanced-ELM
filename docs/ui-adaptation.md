@@ -5,6 +5,7 @@ Enhanced ELM targets the production Angular page at `https://elm.edina.ac.uk/elm
 | Surface | ELM hook | Enhanced ELM treatment |
 | --- | --- | --- |
 | Composer | `edh-elm-input`, `.query-form-container`, `.query-form` | Compact surface, no redundant inner focus outline, bottom-pinned empty state. |
+| Attached files | `edh-file-bar-widget` | Removes ELM's full-width attachment bar from layout; shows a fixed lower-right paperclip button with count and a hover/focus popup. |
 | Model control | Composer button containing `mat-icon` `memory` | ELM remains the native model selector; a family filter and default-model star are inserted before it. |
 | Native model menu | `.model-source-subheader`, `button[role="menuitem"]` | Filters the menu to the selected provider family and clicks only a native menu item. |
 | Conversation | `edh-elm-query`, `.query-response`, `.response` | Compact reading width, user-right/ELM-left message alignment, outer-scroll lock. |

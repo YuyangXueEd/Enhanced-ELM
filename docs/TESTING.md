@@ -24,6 +24,7 @@ Get-ChildItem -Recurse -File src -Filter *.js |
 - Send a message containing headings, a list, a link, a code block, inline math, and display math. Copy a message, code, and LaTeX; download the full conversation Markdown and inspect the file.
 - Test Math Repair with a fully delimited inline formula, a `\\(...\\)` formula, a code-wrapped formula, and the split Celsius-range defect. Invalid or incomplete formulas must remain visible as original text.
 - Save a snapshot with a folder and tags. Search it, download it from the Library, and confirm its text remains in local extension storage after a page refresh.
+- Attach one and multiple files. The full-width file bar must not reserve space below the composer; the lower-right paperclip must show the count, open its native summary on hover/focus/click, and its **View All** action must still open ELM's native file view.
 - Bookmark a user and ELM message, add notes, jump from the sidebar list, edit a note, then remove the bookmark.
 - In a long conversation, click timeline nodes and confirm they scroll to the corresponding message.
 - Inspect DevTools Console after the checks. There must be no uncaught extension errors and normal ELM sending/model controls must still work.

@@ -146,3 +146,120 @@
   font-size: .82rem;
   resize: vertical;
 }
+
+/* ELM's native file bar is normally a full-width row directly below the
+ * composer. Keep that Angular component intact, but take it out of document
+ * flow and expose it as a compact, keyboard-accessible attachment dock. */
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock] {
+  position: fixed !important;
+  z-index: 24;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 !important;
+  overflow: visible;
+}
+
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock] > mat-card {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: block;
+  width: min(320px, calc(100vw - 36px));
+  min-width: 230px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 12px;
+  background: var(--elm-clean-surface-raised);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 20%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(.98);
+  transform-origin: right bottom;
+  visibility: hidden;
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+}
+
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock]:is(:hover, :focus-within, [data-enhanced-elm-attachments-open]) > mat-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-2px) scale(1);
+  visibility: visible;
+}
+
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock] .view-files-container {
+  min-height: 46px;
+  padding: 8px 10px;
+  gap: 8px;
+  color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock] .view-files-container > mat-icon {
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock] .view-files-container button {
+  min-height: 30px;
+  margin-left: auto;
+  border-radius: 7px;
+  color: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode .enhanced-elm-attachment-toggle {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 50%;
+  background: var(--elm-clean-surface-raised);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 16%);
+  color: var(--elm-clean-accent);
+  cursor: pointer;
+}
+
+:root.elm-clean-mode .enhanced-elm-attachment-toggle > span {
+  font-family: "Material Symbols Outlined", "Material Icons", sans-serif;
+  font-size: 21px;
+  line-height: 1;
+}
+
+:root.elm-clean-mode .enhanced-elm-attachment-toggle > small {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  place-items: center;
+  border: 2px solid var(--elm-clean-canvas);
+  border-radius: 999px;
+  background: var(--elm-clean-accent);
+  color: var(--mat-sys-on-primary);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+:root.elm-clean-mode .enhanced-elm-attachment-toggle:hover,
+:root.elm-clean-mode .enhanced-elm-attachment-toggle:focus-visible,
+:root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachments-open] .enhanced-elm-attachment-toggle {
+  border-color: var(--elm-clean-accent);
+  background: var(--elm-clean-web-active-surface);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  :root.elm-clean-mode edh-file-bar-widget[data-enhanced-elm-attachment-dock] {
+    right: 12px;
+    bottom: 12px;
+  }
+}
