@@ -15,7 +15,15 @@
   --elm-clean-focus-ring: rgb(11 107 87 / 30%);
   --elm-clean-user-surface: #edf3ef;
   --elm-clean-system-surface: #f0f3f1;
-  --elm-clean-code-surface: #f7f9f7;
+  /* Prism's bundled theme is dark-background oriented. Keep the code layer
+   * explicitly light rather than allowing its near-white foreground to leak
+   * onto this light surface. */
+  --elm-clean-code-surface: #f3f7f4;
+  --elm-clean-code-ink: #1f362c;
+  --elm-clean-code-muted: #607168;
+  --elm-clean-code-keyword: #195f4b;
+  --elm-clean-code-function: #3d5f86;
+  --elm-clean-code-literal: #775224;
   --elm-clean-web-active-surface: #e8f2ed;
   --elm-clean-disabled-ink: #6f7973;
   --elm-clean-composer-shadow: 0 10px 26px rgb(23 35 31 / 8%);
@@ -59,6 +67,11 @@
   --elm-clean-user-surface: #26372d;
   --elm-clean-system-surface: #202a25;
   --elm-clean-code-surface: #141b17;
+  --elm-clean-code-ink: #dce9e1;
+  --elm-clean-code-muted: #a7b8ad;
+  --elm-clean-code-keyword: #9bd1b1;
+  --elm-clean-code-function: #a9cdea;
+  --elm-clean-code-literal: #e4bd7f;
   --elm-clean-web-active-surface: #294634;
   --elm-clean-disabled-ink: #7d8a81;
   --elm-clean-composer-shadow: 0 10px 26px rgb(0 0 0 / 30%);
@@ -80,6 +93,11 @@
     --elm-clean-user-surface: #26372d;
     --elm-clean-system-surface: #202a25;
     --elm-clean-code-surface: #141b17;
+    --elm-clean-code-ink: #dce9e1;
+    --elm-clean-code-muted: #a7b8ad;
+    --elm-clean-code-keyword: #9bd1b1;
+    --elm-clean-code-function: #a9cdea;
+    --elm-clean-code-literal: #e4bd7f;
     --elm-clean-web-active-surface: #294634;
     --elm-clean-disabled-ink: #7d8a81;
     --elm-clean-composer-shadow: 0 10px 26px rgb(0 0 0 / 30%);
@@ -175,7 +193,10 @@
 }
 
 :root.elm-clean-mode edh-elm-main .main-container > edh-elm-input {
-  margin-top: clamp(24px, 5vh, 56px) !important;
+  /* ELM already gives its flex-column composer margin-top:auto. Retain that
+   * contract rather than calculating a viewport height: the card is shorter
+   * than the browser viewport once the ELM header is present. */
+  margin-top: auto !important;
 }
 
 /* ELM centres its empty composer and leaves a second, blank scroll region
@@ -186,40 +207,6 @@
 }
 
 :root.elm-clean-mode edh-elm-main .main-container:has(edh-intro) > edh-elm-input {
-  margin-top: auto !important;
-}
-
-/* Once a reply exists, the composer should follow the conversation rather
- * than preserve the roomy empty-state rhythm. */
-:root.elm-clean-mode edh-elm-main .main-container:has(edh-elm-query .response) > edh-elm-input {
-  margin-top: 12px !important;
-}
-
-/* ELM's "selected documents" event creates a query component without a normal
- * `.response` row. The earlier response-only rule then fell back to ELM's
- * vertically centred new-chat layout. Own the main vertical rhythm instead:
- * the query gets the flexible reading area and the composer always occupies
- * the bottom edge, whether the chat is empty, has files, or has replies. */
-:root.elm-clean-mode edh-elm-main,
-:root.elm-clean-mode edh-elm-main .main-container {
-  min-height: 0;
-}
-
-:root.elm-clean-mode edh-elm-main .main-container:has(> edh-elm-input) {
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100%;
-  min-height: calc(100dvh - 56px);
-  justify-content: flex-start !important;
-}
-
-:root.elm-clean-mode edh-elm-main .main-container:has(> edh-elm-input) > edh-elm-query {
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
-:root.elm-clean-mode edh-elm-main .main-container:has(> edh-elm-input) > edh-elm-input {
-  flex: 0 0 auto;
   margin-top: auto !important;
 }
 
@@ -410,7 +397,10 @@
 }
 
 :root.elm-clean-mode edh-elm-input .query-form-container {
-  width: min(100% - 32px, 980px) !important;
+  /* Scale the working column with available width: comfortable on a 1280px
+   * Air viewport, broad enough on 14/16-inch MacBook screens, and capped so
+   * controls do not stretch into an unreadable desktop row. */
+  width: min(calc(100% - clamp(24px, 3vw, 64px)), clamp(720px, 68vw, 1040px)) !important;
   margin: 8px auto 12px !important;
 }
 
@@ -421,6 +411,36 @@
   border-radius: 12px;
   background: var(--elm-clean-surface-raised);
   box-shadow: var(--elm-clean-composer-shadow);
+}
+
+/* Angular CDK lets the textarea grow almost to the full viewport (its inline
+ * max-height is 704px). That pushes the control row over long drafts and leaves
+ * no practical way to edit them. Cap only the editable field, then give it a
+ * clear local scrollbar so the composer stays intact and pinned. */
+:root.elm-clean-mode edh-elm-input textarea#main[cdktextareaautosize] {
+  min-height: 44px !important;
+  max-height: min(28dvh, 220px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--elm-clean-muted) transparent;
+}
+
+:root.elm-clean-mode edh-elm-input textarea#main[cdktextareaautosize]::-webkit-scrollbar {
+  width: 9px;
+}
+
+:root.elm-clean-mode edh-elm-input textarea#main[cdktextareaautosize]::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--elm-clean-muted);
+  background-clip: padding-box;
+}
+
+:root.elm-clean-mode edh-elm-input textarea#main[cdktextareaautosize]::-webkit-scrollbar-thumb:hover {
+  background: var(--elm-clean-accent);
+  background-clip: padding-box;
 }
 
 :root.elm-clean-mode edh-elm-input .mat-mdc-text-field-wrapper,
@@ -448,15 +468,18 @@
 
 :root.elm-clean-mode edh-elm-input .query-form-field {
   margin-bottom: 0;
-  height: 52px;
+  min-height: 52px;
+  height: auto;
 }
 
 :root.elm-clean-mode edh-elm-input .mat-mdc-text-field-wrapper {
-  height: 52px;
+  min-height: 52px;
+  height: auto;
 }
 
 :root.elm-clean-mode edh-elm-input .mat-mdc-form-field-infix {
   min-height: 52px;
+  height: auto;
   padding-block: 4px;
 }
 
@@ -598,7 +621,7 @@
 }
 
 :root.elm-clean-compact-conversation edh-elm-query .response-container {
-  max-width: min(940px, calc(100% - 32px));
+  max-width: min(clamp(760px, 64vw, 1040px), calc(100% - clamp(24px, 3vw, 64px)));
 }
 
 :root.elm-clean-compact-conversation edh-elm-query .response {
@@ -613,7 +636,7 @@
 }
 
 :root.elm-clean-compact-conversation edh-elm-query .response .markdown-user {
-  max-width: min(78%, 720px);
+  max-width: min(78%, clamp(560px, 54vw, 760px));
   padding: 6px 12px;
   border: 1px solid var(--elm-clean-line);
   border-radius: 12px 4px 12px 12px;
@@ -723,7 +746,42 @@
   border: 1px solid var(--elm-clean-line);
   border-radius: 8px;
   background: var(--elm-clean-code-surface);
+  color: var(--elm-clean-code-ink);
   overflow: auto;
+}
+
+/* ELM ships a Prism theme designed for a dark code canvas. Override its
+ * foreground, shadow and token palette from semantic variables so code stays
+ * readable in both Enhanced ELM themes. */
+:root.elm-clean-mode edh-elm-query .markdown pre,
+:root.elm-clean-mode edh-elm-query .markdown pre > code,
+:root.elm-clean-mode edh-elm-query .markdown :is(pre, code)[class*="language-"] {
+  color: var(--elm-clean-code-ink) !important;
+  text-shadow: none !important;
+}
+
+:root.elm-clean-mode edh-elm-query .markdown pre :is(.token.comment, .token.prolog, .token.doctype, .token.cdata) {
+  color: var(--elm-clean-code-muted) !important;
+}
+
+:root.elm-clean-mode edh-elm-query .markdown pre :is(.token.keyword, .token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol) {
+  color: var(--elm-clean-code-keyword) !important;
+}
+
+:root.elm-clean-mode edh-elm-query .markdown pre :is(.token.function, .token.class-name, .token.operator, .token.entity, .token.url) {
+  color: var(--elm-clean-code-function) !important;
+}
+
+:root.elm-clean-mode edh-elm-query .markdown pre :is(.token.string, .token.char, .token.attr-value, .token.regex, .token.variable, .token.important) {
+  color: var(--elm-clean-code-literal) !important;
+}
+
+:root.elm-clean-mode edh-elm-query .markdown pre button:not([data-enhanced-elm-ui]) {
+  border: 1px solid var(--elm-clean-line);
+  border-radius: 5px;
+  background: var(--elm-clean-surface-raised);
+  color: var(--elm-clean-muted);
+  box-shadow: none;
 }
 
 /* ELM's markdown arrives with a mixture of browser and Material defaults.
@@ -1142,5 +1200,36 @@
 
   :root.elm-clean-mode [data-elm-clean-timeline] {
     display: none;
+  }
+}
+
+/* Short desktop viewports are common when Chrome's toolbar is visible on a
+ * MacBook Air. Reduce chrome around the composer, but never calculate its
+ * height from the viewport: ELM's own flex card remains the vertical owner. */
+@media (min-width: 769px) and (max-height: 820px) {
+  :root.elm-clean-mode main {
+    padding-block: 6px;
+  }
+
+  :root.elm-clean-mode edh-elm-input .query-form-container {
+    margin-block: 4px 8px !important;
+  }
+
+  :root.elm-clean-mode edh-elm-input .query-form {
+    padding-block: 6px !important;
+  }
+
+  :root.elm-clean-mode [data-elm-clean-timeline] {
+    max-height: min(44vh, 280px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  :root.elm-clean-mode {
+    --elm-clean-sidebar-width: 248px;
+  }
+
+  :root.elm-clean-mode .elm-clean-family-select {
+    width: 112px;
   }
 }

@@ -23,12 +23,15 @@
     return undefined;
   }
 
-  function renderFormula(formula) {
+  function renderFormula(formula, { inlineContainer = false } = {}) {
     if (!formula?.tex || !globalThis.katex?.renderToString) return undefined;
     const candidates = [formula.tex, formula.tex.replace(/\\\\(?=[A-Za-z])/g, "\\")];
     for (const tex of candidates) {
       try {
-        const element = document.createElement(formula.displayMode ? "div" : "span");
+        /* A display formula can appear inside Markdown paragraph text. Keep
+         * the host inline-safe there; CSS promotes it to a block without
+         * creating invalid <div> descendants inside a <p>. */
+        const element = document.createElement(formula.displayMode && !inlineContainer ? "div" : "span");
         element.dataset.enhancedElmUi = "";
         element.dataset.enhancedElmMathRepair = "";
         element.dataset.enhancedElmMathSource = tex;
@@ -70,6 +73,40 @@
       if (!rendered) continue;
       repaired.add(parent);
       textNode.replaceWith(rendered);
+    }
+  }
+
+  /* ELM occasionally leaves valid LaTeX delimiters inside a larger Markdown
+   * text node (for example, "The answer is $E=mc^2$"). Split that text only at
+   * complete delimiter pairs, validate each TeX fragment with KaTeX, and keep
+   * every non-formula character unchanged. The display alternatives come
+   * first so an inline matcher never consumes part of a $$…$$ expression. */
+  function repairDelimitedFormulaSegments(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const candidates = [];
+    while (walker.nextNode()) candidates.push(walker.currentNode);
+    const delimiterPattern = /(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|(?<!\\)\$(?!\$)(?:\\.|[^$\n])+?(?<!\\)\$(?!\$))/g;
+
+    for (const textNode of candidates) {
+      const parent = textNode.parentElement;
+      const source = textNode.textContent ?? "";
+      if (!parent || !source || parent.closest("[data-enhanced-elm-ui], pre, code, .katex, [data-enhanced-elm-math-repair]")) continue;
+      delimiterPattern.lastIndex = 0;
+      let match;
+      let cursor = 0;
+      let changed = false;
+      const fragment = document.createDocumentFragment();
+      while ((match = delimiterPattern.exec(source))) {
+        const rendered = renderFormula(parseDelimitedFormula(match[0]), { inlineContainer: true });
+        if (!rendered) continue;
+        if (match.index > cursor) fragment.append(document.createTextNode(source.slice(cursor, match.index)));
+        fragment.append(rendered);
+        cursor = match.index + match[0].length;
+        changed = true;
+      }
+      if (!changed) continue;
+      if (cursor < source.length) fragment.append(document.createTextNode(source.slice(cursor)));
+      textNode.replaceWith(fragment);
     }
   }
 
@@ -128,6 +165,7 @@
     if (!app.state.settings.mathRepair || !app.query) return;
     repairSplitCelsiusRanges(app.query);
     repairCodeWrappedFormulae(app.query);
+    repairDelimitedFormulaSegments(app.query);
     repairStandaloneTextFormulae(app.query);
     repairSplitDisplayBlocks(app.query);
   }

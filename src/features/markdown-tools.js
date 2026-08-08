@@ -89,6 +89,18 @@
   function mark() {
     if (!app.state.settings.markdownTools || !app.query) return;
     for (const pre of app.query.querySelectorAll("pre")) {
+      /* ELM asynchronously adds its own visible Copy button to code blocks.
+       * Keeping a second icon underneath it makes the Enhanced ELM control
+       * unreachable. Prefer ELM's native, already-working code copy action
+       * and remove our earlier fallback as soon as that button exists. */
+      /* ELM places its clipboard toolbar beside <pre>, inside the same
+       * positioned wrapper, rather than as a direct descendant of <pre>. */
+      const nativeCopy = pre.parentElement?.querySelector("button.markdown-clipboard-button");
+      const fallbackCopy = pre.querySelector(".enhanced-elm-copy-code");
+      if (nativeCopy) {
+        fallbackCopy?.remove();
+        continue;
+      }
       ensureCopyButton(pre, "Copy code", "enhanced-elm-copy-code", async () => {
         await copyText(pre.textContent?.trim() ?? "");
         app.showToast("Code copied");
