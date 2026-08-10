@@ -17,3 +17,6 @@ Thumbs.db
 downloads/
 screenshots/
 test-data/
+
+# Local source captures used only while composing store screenshots
+store-assets/comparison-*.png

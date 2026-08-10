@@ -39,10 +39,10 @@ Enhanced ELM makes the ELM interface easier to live in while leaving ELM in char
 | Compact, responsive light/dark workspace; a title-only chat list; full reading width with the sidebar closed; and a bottom-pinned composer for new conversations. | Explicit local Markdown snapshots with folders, tags, search, download, message bookmarks, local notes, and a compact conversation timeline. | Per-message Markdown copy, code-block copy, whole-conversation Markdown downloads, a low-profile attachment dock, and conservative KaTeX Math Repair. |
 
 <p align="center">
-  <img src="store-assets/promo-screenshot-1280x800-v1.png" alt="Editorial teaser artwork for Enhanced ELM" width="760">
+  <img src="store-assets/screenshot-before-after-1280x800-v1.png" alt="Side-by-side comparison of Original ELM and Enhanced ELM" width="960">
 </p>
 
-<p align="center"><sub>Release artwork. The extension works within ELM; it does not create a separate chat service.</sub></p>
+<p align="center"><sub>Same ELM New look workspace: Original ELM on the left, Enhanced ELM on the right.</sub></p>
 
 ## What it adds
 

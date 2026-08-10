@@ -69,6 +69,7 @@ Use only scrubbed demonstration conversations. Never include student, research, 
 | Asset | Chrome Web Store | Microsoft Edge Add-ons | Status |
 | --- | --- | --- | --- |
 | Store icon | 128 × 128 PNG | Uses manifest icon | Ready: `assets/icon-128.png` |
+| Before / after comparison | 1280 × 800 PNG | 1280 × 800 PNG | Ready: `store-assets/screenshot-before-after-1280x800-v1.png`; use as the first actual product screenshot. |
 | Compact workspace screenshot | 1280 × 800 PNG | 1280 × 800 PNG | Ready: `store-assets/screenshot-compact-workspace-1280x800-rgb.png` |
 | Supplementary promotional graphic | 1280 × 800 PNG | 1280 × 800 PNG | Optional: `store-assets/promo-screenshot-1280x800-v1.png`; do not use instead of a real product screenshot. |
 | Models and composer screenshot | 1280 × 800 PNG | 1280 × 800 PNG | Create from a scrubbed demo |

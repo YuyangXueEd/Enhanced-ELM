@@ -39,10 +39,10 @@ Enhanced ELM 让 ELM 更适合长期使用，同时始终由 ELM 决定对话、
 | 紧凑且响应式的明暗工作区、仅标题的对话列表、收起侧栏后的完整阅读宽度，以及固定在新对话底部的输入框。 | 主动保存的本地 Markdown 快照，支持文件夹、标签、搜索和下载；也可以给关键消息加书签、写本地笔记，并用时间线快速定位。 | 单条消息 Markdown 复制、代码块复制、整段对话下载 Markdown、低占用的附件悬浮按钮，以及保守的 KaTeX 数学公式修复。 |
 
 <p align="center">
-  <img src="store-assets/promo-screenshot-1280x800-v1.png" alt="Enhanced ELM 宣传视觉" width="760">
+  <img src="store-assets/screenshot-before-after-1280x800-v1.png" alt="原始 ELM 与 Enhanced ELM 的并列对比" width="960">
 </p>
 
-<p align="center"><sub>宣传视觉。扩展直接在 ELM 内工作，不会创建独立的聊天服务。</sub></p>
+<p align="center"><sub>同一 ELM New look 工作区：左侧为原始 ELM，右侧为 Enhanced ELM。</sub></p>
 
 ## 能力一览
 
