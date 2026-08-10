@@ -70,6 +70,7 @@ Use only scrubbed demonstration conversations. Never include student, research, 
 | --- | --- | --- | --- |
 | Store icon | 128 × 128 PNG | Uses manifest icon | Ready: `assets/icon-128.png` |
 | Compact workspace screenshot | 1280 × 800 PNG | 1280 × 800 PNG | Ready: `store-assets/screenshot-compact-workspace-1280x800-rgb.png` |
+| Supplementary promotional graphic | 1280 × 800 PNG | 1280 × 800 PNG | Optional: `store-assets/promo-screenshot-1280x800-v1.png`; do not use instead of a real product screenshot. |
 | Models and composer screenshot | 1280 × 800 PNG | 1280 × 800 PNG | Create from a scrubbed demo |
 | Library / bookmarks screenshot | 1280 × 800 PNG | 1280 × 800 PNG | Create from a scrubbed demo |
 | Small promo tile | 440 × 280 PNG/JPEG | Optional, 440 × 280 PNG | Ready: `store-assets/promo-small-440x280-v2.png` |

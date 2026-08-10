@@ -1,0 +1,114 @@
+name: Publish GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to package and publish (for example, v0.1.2)"
+        required: true
+        type: string
+
+# The workflow only receives permission to create or update a GitHub Release.
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Package and publish
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the release tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+
+      - name: Validate release metadata
+        id: release
+        shell: pwsh
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PUSHED_TAG: ${{ github.ref_name }}
+          REQUESTED_TAG: ${{ inputs.tag }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $tag = if ($env:EVENT_NAME -eq "workflow_dispatch") { $env:REQUESTED_TAG } else { $env:PUSHED_TAG }
+
+          if ([string]::IsNullOrWhiteSpace($tag) -or $tag -notmatch '^v(?<version>\d+\.\d+\.\d+)$') {
+            throw "Release tags must use the form vX.Y.Z (for example, v0.1.2)."
+          }
+
+          $matchingTags = @(git tag --points-at HEAD | Where-Object { $_ -eq $tag })
+          if ($matchingTags.Count -eq 0) {
+            throw "The checked-out commit is not the requested tag: $tag"
+          }
+
+          $version = $Matches.version
+          $manifest = Get-Content -Raw manifest.json | ConvertFrom-Json
+          if ($manifest.version -ne $version) {
+            throw "manifest.json is version $($manifest.version), but tag $tag expects $version."
+          }
+
+          $changelog = Get-Content -Raw CHANGELOG.md
+          $escapedVersion = [regex]::Escape($version)
+          if ($changelog -notmatch "(?m)^##\s+$escapedVersion(?:\s|$)") {
+            throw "CHANGELOG.md needs a ## $version heading before a release can be published."
+          }
+
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "package=Enhanced-ELM-$version.zip" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Build and validate extension package
+        shell: pwsh
+        run: ./scripts/package-release.ps1 -Version "${{ steps.release.outputs.version }}"
+
+      - name: Verify release asset
+        shell: pwsh
+        env:
+          RELEASE_PACKAGE: ${{ steps.release.outputs.package }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          if (-not (Test-Path -LiteralPath $env:RELEASE_PACKAGE)) {
+            throw "Expected release package was not created: $env:RELEASE_PACKAGE"
+          }
+
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path $env:RELEASE_PACKAGE))
+          try {
+            $entries = @($archive.Entries | ForEach-Object { $_.FullName -replace '\\', '/' })
+            $hasNestedRootDirectory = @($entries | Where-Object { $_ -match '^Enhanced-ELM/' }).Count -gt 0
+            if (($entries -notcontains 'manifest.json') -or $hasNestedRootDirectory) {
+              throw "Release package must contain manifest.json at the ZIP root."
+            }
+          } finally {
+            $archive.Dispose()
+          }
+
+          Get-FileHash -LiteralPath $env:RELEASE_PACKAGE -Algorithm SHA256 | Format-List
+
+      - name: Create or update GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+          RELEASE_PACKAGE: ${{ steps.release.outputs.package }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY *> $null
+          $releaseExists = $LASTEXITCODE -eq 0
+
+          if ($releaseExists) {
+            gh release upload $env:RELEASE_TAG $env:RELEASE_PACKAGE --clobber --repo $env:GITHUB_REPOSITORY
+          } else {
+            gh release create $env:RELEASE_TAG $env:RELEASE_PACKAGE `
+              --repo $env:GITHUB_REPOSITORY `
+              --title "Enhanced ELM $env:RELEASE_VERSION" `
+              --generate-notes
+          }

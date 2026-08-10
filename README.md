@@ -1,58 +1,113 @@
-# Enhanced ELM
+<div align="center">
+  <a href="https://github.com/YuyangXueEd/Enhanced-ELM">
+    <img src="assets/icon-128.png" width="92" height="92" alt="Enhanced ELM logo">
+  </a>
+  <h1>Enhanced ELM</h1>
+  <p><strong>A calmer, more capable workspace for ELM New look.</strong></p>
+  <p>Local-first organisation, readable conversations, safe Math Repair, and practical Markdown tools — without replacing ELM's own chat or model logic.</p>
+  <p>
+    <a href="https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp"><img src="https://img.shields.io/badge/Chrome%20Web%20Store-Available-1f5c4b?style=flat-square&logo=googlechrome&logoColor=white" alt="Available in the Chrome Web Store"></a>
+    <a href="https://github.com/YuyangXueEd/Enhanced-ELM/releases/latest"><img src="https://img.shields.io/github/v/release/YuyangXueEd/Enhanced-ELM?display_name=tag&style=flat-square&color=1f5c4b" alt="Latest GitHub release"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/YuyangXueEd/Enhanced-ELM?style=flat-square&color=1f5c4b" alt="MIT License"></a>
+    <img src="https://img.shields.io/badge/Manifest-V3-1f5c4b?style=flat-square&logo=googlechrome&logoColor=white" alt="Manifest V3">
+    <img src="https://img.shields.io/badge/Privacy-Local--first-547665?style=flat-square" alt="Local-first privacy">
+  </p>
+  <p>
+    <a href="https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp"><strong>Install from the Chrome Web Store</strong></a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/YuyangXueEd/Enhanced-ELM/releases/latest">Download the latest release</a>
+    &nbsp;·&nbsp;
+    <a href="README.zh-CN.md">简体中文</a>
+  </p>
+</div>
 
-> A local-first productivity extension for [ELM](https://elm.edina.ac.uk/elm-new).
+<p align="center">
+  <img src="store-assets/promo-marquee-1400x560-v2.png" alt="Enhanced ELM — a focused workspace for ELM New look" width="100%">
+</p>
 
-[简体中文](README.zh-CN.md) · [Architecture](docs/architecture.md) · [Privacy](docs/PRIVACY.md) · [Contributing](CONTRIBUTING.md)
+<p align="center"><sub>Independent, local-first companion for ELM New look.</sub></p>
 
-Enhanced ELM gives ELM **New look** a compact, readable workspace without replacing its chat or model logic. Everything runs in the browser; the extension has no server, analytics, remote configuration, or cloud sync.
+> [!IMPORTANT]
+> Enhanced ELM runs on [ELM **New look**](https://elm.edina.ac.uk/elm-new) only. It is an independent project and is not affiliated with, endorsed by, or operated by The University of Edinburgh, EDINA, or ELM.
 
-> Enhanced ELM is an independent project. It is not affiliated with, endorsed by, or operated by The University of Edinburgh, EDINA, or ELM.
+## A small extension with useful weight
 
-## Highlights
+Enhanced ELM makes the ELM interface easier to live in while leaving ELM in charge of conversations, model availability, and generation. There is no extension server, analytics, remote configuration, or cloud sync.
 
-| Area | What it adds |
-| --- | --- |
-| Clean workspace | Compact light/dark colour system, title-only chat list, full reading width when the sidebar is closed, and a bottom-pinned new-chat composer. |
-| Model workflow | A **Family → ELM model** workflow. Switching family selects its first native model; ELM still owns the actual model menu and any reasoning-effort option. Pin the current model as the local default. |
-| Math Repair | Conservative KaTeX rendering for complete recoverable LaTeX, code-wrapped formulas, double-escaped commands, and the observed split Celsius-range defect. Copy the resulting LaTeX source. |
-| Local library | Explicit, user-saved Markdown snapshots with folders, tags, search, and download. No silent conversation mirroring. |
-| Attachments | A count-badged lower-right paperclip dock. The native attachment summary opens on hover, focus, or click instead of reserving a full row below the composer. |
-| Key messages | Bookmark a message, add a local note, and jump back to it from the sidebar. |
-| Markdown tools | Copy an individual message as Markdown, copy code blocks, and download the current visible conversation as a Markdown file. |
-| Navigation | A compact desktop timeline for jumping through the visible conversation. |
+| Work more calmly | Find your place | Keep useful answers |
+| --- | --- | --- |
+| Compact, responsive light/dark workspace; a title-only chat list; full reading width with the sidebar closed; and a bottom-pinned composer for new conversations. | Explicit local Markdown snapshots with folders, tags, search, download, message bookmarks, local notes, and a compact conversation timeline. | Per-message Markdown copy, code-block copy, whole-conversation Markdown downloads, a low-profile attachment dock, and conservative KaTeX Math Repair. |
 
-## Installation
+<p align="center">
+  <img src="store-assets/promo-screenshot-1280x800-v1.png" alt="Editorial teaser artwork for Enhanced ELM" width="760">
+</p>
 
-### Chrome / Edge developer install
+<p align="center"><sub>Release artwork. The extension works within ELM; it does not create a separate chat service.</sub></p>
 
-1. Download or clone this repository.
-2. Open `chrome://extensions` or `edge://extensions` and enable **Developer mode**.
-3. Select **Load unpacked**, then choose this repository folder.
-4. In ELM, switch to **New look**, then open or refresh `https://elm.edina.ac.uk/elm-new`.
-5. Open the toolbar popup to enable individual presentation, math, and Markdown options.
+## What it adds
 
-After a code change, use **Reload** on the extension card, then refresh ELM. The extension intentionally does not run on ELM's legacy interface. The current release is buildless: the folder itself is the unpacked extension.
+### A more focused reading surface
 
-## How local data works
+- Tight, legible spacing with a light and dark colour scheme designed around ELM's existing interface.
+- Compact chat navigation that shows titles instead of bulky conversation cards.
+- A sidebar that gives the conversation the full available width when collapsed.
+- A composer that remains usable near the bottom of a new or long conversation, across common laptop and desktop viewport sizes.
 
-- Preferences, saved snapshots, default-model preference, bookmarks, and notes use `chrome.storage.local` in the current browser profile.
-- Conversation text is stored only when you deliberately save a snapshot or bookmark a message. Markdown export and copy actions stay local to the page/browser.
-- Enhanced ELM does not send page content, saved data, or identifiers to the developer or to any third party.
-- Removing the extension or clearing its extension data removes this local data.
+### Native model controls, made easier to scan
 
-Read the complete [privacy policy](docs/PRIVACY.md) before publishing to a store.
+- A **family → ELM model** workflow: changing family selects that family's first model.
+- ELM remains the source of truth for the actual model menu and any available reasoning effort.
+- Save the active model as a local default preference; it never alters server-side account settings.
 
-## Math Repair scope
+### A local research library
 
-Math Repair is intentionally conservative. It renders only a complete formula that KaTeX can validate. It does not guess through prose, run remote code, or replace arbitrary page content. If a formula cannot be safely parsed, Enhanced ELM leaves the original text visible. KaTeX 0.17.0 is bundled inside the extension; see [third-party notices](THIRD_PARTY_NOTICES.md).
+- Save a Markdown snapshot only when you choose to; nothing is silently mirrored.
+- Organise saved snapshots with folders, tags, text search, and local downloads.
+- Bookmark a useful message, add a private note, and jump back to it from the sidebar.
 
-## Local typography
+### More useful output
 
-Enhanced ELM preserves ELM's native interface and reading fonts. It bundles CaskaydiaCove Nerd Font locally for code and other explicit monospace content only. No font request is made to Google Fonts or any other third-party service. Formula rendering and Material icons retain their own dedicated fonts.
+- Copy one message as Markdown, copy code blocks directly, or download the visible conversation as Markdown.
+- Keep file selections out of the composer flow with a paperclip dock that expands only on hover, focus, or click.
+- Repair only complete, recoverable LaTeX fragments with bundled KaTeX and offer the repaired source for copying.
 
-If [ELM Math Fixer](https://github.com/lambdacdm/ELM-Math-Fixer) is also installed, use one math-repair extension at a time while comparing results; both extensions may try to repair the same visible fragments.
+## Install in two minutes
 
-## Development
+### Chrome Web Store
+
+Open [Enhanced ELM on the Chrome Web Store](https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp), select **Add to Chrome**, then open or refresh [ELM New look](https://elm.edina.ac.uk/elm-new).
+
+### Manual / tester install (Chrome or Edge)
+
+1. Download the [latest release](https://github.com/YuyangXueEd/Enhanced-ELM/releases/latest) and unzip it, or clone this repository.
+2. Open `chrome://extensions` or `edge://extensions`, then enable **Developer mode**.
+3. Select **Load unpacked** and choose the unzipped release folder (the folder containing `manifest.json`).
+4. Switch ELM to **New look**, open or refresh `https://elm.edina.ac.uk/elm-new`, and open the extension popup to choose the optional presentation, Math Repair, and Markdown tools.
+
+After a source-code change, use **Reload** on the extension card and refresh ELM. The project is buildless: the repository folder itself can be loaded as an unpacked extension.
+
+For a short testing hand-off, see the [tester guide](docs/TESTER-GUIDE.md).
+
+## Local by design
+
+- Preferences, snapshots, default-model preference, bookmarks, and notes stay in `chrome.storage.local` in the current browser profile.
+- Conversation text becomes persistent only when you explicitly save a snapshot or bookmark a message. Copy and export actions stay in the browser.
+- Enhanced ELM does not send page content, saved data, or identifiers to the developer or another third party.
+- Removing the extension or clearing its extension data removes its local data.
+
+Read the complete [privacy policy](docs/PRIVACY.md) for the store-facing details.
+
+## Math Repair, deliberately conservative
+
+Math Repair renders only a complete formula that bundled KaTeX can validate. It supports recoverable LaTeX fragments, code-wrapped formulas, double-escaped commands, and the observed split Celsius-range defect. It does not guess through prose, execute remote code, or replace arbitrary page content. When a fragment cannot be safely parsed, it remains visible as original text.
+
+KaTeX 0.17.0 is bundled inside the extension; see [third-party notices](THIRD_PARTY_NOTICES.md). If [ELM Math Fixer](https://github.com/lambdacdm/ELM-Math-Fixer) is also installed, enable one math-repair extension at a time while comparing results so both extensions do not modify the same visible fragment.
+
+## Typography that respects ELM
+
+Enhanced ELM keeps ELM's native interface and reading fonts. It bundles CaskaydiaCove Nerd Font locally for code and other explicit monospace content only. No font request is made to Google Fonts or any other third-party service; formula rendering and Material icons retain their dedicated fonts.
+
+## Develop or contribute
 
 ```text
 manifest.json                 Manifest V3 entry point
@@ -64,7 +119,7 @@ src/content.css               Base Clean workspace styling
 src/features.css              Feature-local styling
 ```
 
-Run a fast syntax check after changing JavaScript:
+Run a quick JavaScript syntax check after changing source files:
 
 ```powershell
 Get-ChildItem -Recurse -File src -Filter *.js |
@@ -72,11 +127,11 @@ Get-ChildItem -Recurse -File src -Filter *.js |
   ForEach-Object { node --check $_.FullName }
 ```
 
-See [the architecture guide](docs/architecture.md) for data boundaries and the [verification checklist](docs/TESTING.md) for manual regression tests.
+The [architecture guide](docs/architecture.md) explains the data boundaries, and [TESTING.md](docs/TESTING.md) records the manual regression checks. Issues and pull requests are welcome; please read [CONTRIBUTING.md](CONTRIBUTING.md) and keep changes ELM-scoped, local-first, and independently testable.
 
-## Contributing
+### Release automation
 
-Issues and pull requests are welcome. Please keep features scoped to ELM, avoid remote executable code, preserve local-first behaviour, and add a verification step for a new selector or DOM mutation. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Pushing a matching tag such as `v0.1.2` packages the extension and publishes a GitHub Release automatically. The workflow refuses to release unless the tag, `manifest.json`, and `CHANGELOG.md` agree; store uploads remain manual. See [RELEASING.md](docs/RELEASING.md) for the complete checklist.
 
 ## License
 

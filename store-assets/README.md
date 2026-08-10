@@ -8,6 +8,7 @@ This directory contains listing-only assets. They are intentionally excluded fro
 - `promo-small-440x280.png` and `promo-marquee-1400x560.png`: earlier code-drawn alternatives, retained for comparison.
 - `screenshot-compact-workspace-1280x800-rgb.png`: scrubbed real Chrome capture of the compact workspace, Markdown tools, Math Repair, and composer; converted to a 24-bit RGB PNG for dashboard upload.
 - `screenshot-compact-workspace-1280x800.png`: original scrubbed capture retained as the source image.
+- `promo-screenshot-1280x800-v1.png`: ImageGen-assisted 1280 × 800 supplementary promotional graphic, matching the small-tile visual system. It is not a replacement for a real product screenshot.
 - Store screenshots must be real, scrubbed 1280 × 800 captures of Enhanced ELM. Never use a real conversation without explicit permission.
 
 Regenerate the promo tiles with:
