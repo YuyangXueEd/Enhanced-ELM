@@ -5,6 +5,7 @@
     enabled: true,
     hideGuidance: true,
     mathRepair: true,
+    markdownCompatibility: false,
     markdownTools: true
   });
 

@@ -24,6 +24,7 @@ The extension is Manifest V3 and intentionally buildless. Content scripts run in
 | `src/shared/settings.js` | Defaults, setting normalisation, old-setting migration names | `enhancedElmSettings` |
 | `src/core/extension.js` | Small feature registry, shared state, accessible toast | None |
 | `src/core/dom.js` | DOM-safe utilities, local storage wrapper, copy helper | None |
+| `src/core/local-fonts.js` | Registers the bundled local monospace code font through extension URLs | None |
 | `src/core/workspace-store.js` | Validates, migrates, persists workspace data and notifies subscribers | `enhancedElmWorkspace` |
 | `src/features/model-controls.js` | Family filter, native-model selection, explicit default-model preference | `enhancedElmModelPreference` |
 | `src/features/math-repair.js` | Conservative local KaTeX repair | None |

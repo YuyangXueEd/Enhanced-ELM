@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 10 August 2026
+
+- Preserved ELM's original UI and reading fonts; CaskaydiaCove Mono now applies only to code and other explicitly monospace content.
+- Added bundled local font loading for the monospace code face, with no remote font requests.
+- Improved Math Repair for formulas embedded in Markdown, split display expressions, and a narrow, default-off compatibility recovery for ELM's inline-math plus escaped-currency parsing defect.
+- Added release, tester, store, and Edge Add-ons documentation plus a validated store-asset workflow.
+
 ## 0.1.0 — 8 August 2026
 
 - First public Enhanced ELM release: compact New look workspace, native Family-to-Model workflow, local default model preference, Math Repair, snapshots, bookmarks, Markdown tools, timeline, and documentation.

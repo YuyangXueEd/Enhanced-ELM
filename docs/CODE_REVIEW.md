@@ -1,4 +1,4 @@
-# 0.1.0 code review
+# 0.1.1 code review
 
 Reviewed: 7 August 2026
 
@@ -17,7 +17,7 @@ Reviewed: 7 August 2026
 
 ## Checks completed
 
-- `manifest.json` parses, contains **Enhanced ELM** version **0.1.0**, has only the `storage` permission, and all declared resources exist.
+- `manifest.json` parses, contains **Enhanced ELM** version **0.1.1**, has only the `storage` permission, and all declared resources exist.
 - `node --check` passes for every non-vendor JavaScript file.
 - A no-network scan finds no `fetch`, XHR, WebSocket, beacon, or HTTP URL in first-party source code.
 - Bundled KaTeX validated four representative inputs: Celsius range, quadratic formula, aligned equations, and summation.

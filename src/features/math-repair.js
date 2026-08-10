@@ -81,32 +81,129 @@
    * complete delimiter pairs, validate each TeX fragment with KaTeX, and keep
    * every non-formula character unchanged. The display alternatives come
    * first so an inline matcher never consumes part of a $$…$$ expression. */
+  function renderDelimitedFormulaSegments(source) {
+    if (!source) return undefined;
+    const delimiterPattern = /(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|(?<!\\)\$(?!\$)(?:\\.|[^$\n])+?(?<!\\)\$(?!\$))/g;
+    let match;
+    let cursor = 0;
+    let changed = false;
+    const fragment = document.createDocumentFragment();
+    while ((match = delimiterPattern.exec(source))) {
+      const rendered = renderFormula(parseDelimitedFormula(match[0]), { inlineContainer: true });
+      if (!rendered) continue;
+      if (match.index > cursor) fragment.append(document.createTextNode(source.slice(cursor, match.index)));
+      fragment.append(rendered);
+      cursor = match.index + match[0].length;
+      changed = true;
+    }
+    if (!changed) return undefined;
+    if (cursor < source.length) fragment.append(document.createTextNode(source.slice(cursor)));
+    return fragment;
+  }
+
   function repairDelimitedFormulaSegments(root) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     const candidates = [];
     while (walker.nextNode()) candidates.push(walker.currentNode);
-    const delimiterPattern = /(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|(?<!\\)\$(?!\$)(?:\\.|[^$\n])+?(?<!\\)\$(?!\$))/g;
-
     for (const textNode of candidates) {
       const parent = textNode.parentElement;
       const source = textNode.textContent ?? "";
       if (!parent || !source || parent.closest("[data-enhanced-elm-ui], pre, code, .katex, [data-enhanced-elm-math-repair]")) continue;
-      delimiterPattern.lastIndex = 0;
-      let match;
-      let cursor = 0;
-      let changed = false;
-      const fragment = document.createDocumentFragment();
-      while ((match = delimiterPattern.exec(source))) {
-        const rendered = renderFormula(parseDelimitedFormula(match[0]), { inlineContainer: true });
-        if (!rendered) continue;
-        if (match.index > cursor) fragment.append(document.createTextNode(source.slice(cursor, match.index)));
-        fragment.append(rendered);
-        cursor = match.index + match[0].length;
-        changed = true;
-      }
-      if (!changed) continue;
-      if (cursor < source.length) fragment.append(document.createTextNode(source.slice(cursor)));
+      const fragment = renderDelimitedFormulaSegments(source);
+      if (!fragment) continue;
       textNode.replaceWith(fragment);
+    }
+  }
+
+  /* Angular's Markdown view can split a delimiter pair across two direct text
+   * nodes (for example, "$a^2+b^2=c^2" followed by "$ and a \\$5 amount").
+   * Joining only adjacent text siblings keeps this repair local, preserves
+   * escaped currency, and never traverses into code blocks or separate prose. */
+  function repairAdjacentTextFormulaSegments(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const parents = new Set();
+    while (walker.nextNode()) {
+      const parent = walker.currentNode.parentElement;
+      if (parent && !parent.closest("[data-enhanced-elm-ui], pre, code, .katex, [data-enhanced-elm-math-repair]")) parents.add(parent);
+    }
+    for (const parent of parents) {
+      let first = parent.firstChild;
+      while (first) {
+        const second = first.nextSibling;
+        if (first.nodeType !== Node.TEXT_NODE || second?.nodeType !== Node.TEXT_NODE) {
+          first = second;
+          continue;
+        }
+        const fragment = renderDelimitedFormulaSegments(`${first.textContent ?? ""}${second.textContent ?? ""}`);
+        if (!fragment) {
+          first = second;
+          continue;
+        }
+        const next = second.nextSibling;
+        first.replaceWith(fragment);
+        second.remove();
+        first = next;
+      }
+    }
+  }
+
+  /* ELM's native Markdown parser can consume the closing dollar of an inline
+   * formula when it is followed by escaped currency. Its resulting DOM has a
+   * deliberately distinctive shape: unfinished formula text, a native KaTeX
+   * wrapper containing ordinary English prose, then a text node beginning with
+   * the amount. This optional recovery operates only on that three-sibling
+   * pattern. It never changes the composer or the sent message. */
+  function splitUnclosedInlineFormula(source) {
+    let delimiter = -1;
+    for (let index = 0; index < source.length; index += 1) {
+      if (source[index] === "$" && source[index - 1] !== "\\") delimiter = index;
+    }
+    if (delimiter < 0 || delimiter === source.length - 1) return undefined;
+    return { prefix: source.slice(0, delimiter), tex: source.slice(delimiter + 1) };
+  }
+
+  function isPlainNativeProse(tex) {
+    return /^(?:and|or|with|for|at|in|on|the|a|an)(?: [a-z]+){1,4}$/.test(tex);
+  }
+
+  function repairEscapedCurrencyMarkdownConflict(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const parents = new Set();
+    while (walker.nextNode()) {
+      const parent = walker.currentNode.parentElement;
+      if (parent && !parent.closest("[data-enhanced-elm-ui], pre, code, .katex, [data-enhanced-elm-math-repair]")) parents.add(parent);
+    }
+    for (const parent of parents) {
+      let first = parent.firstChild;
+      while (first) {
+        const nativeMath = first.nextSibling;
+        const amount = nativeMath?.nextSibling;
+        if (first.nodeType !== Node.TEXT_NODE || nativeMath?.nodeType !== Node.ELEMENT_NODE || amount?.nodeType !== Node.TEXT_NODE) {
+          first = nativeMath;
+          continue;
+        }
+        const nativeKatex = nativeMath.matches(".katex") ? nativeMath : nativeMath.querySelector(".katex");
+        const formula = splitUnclosedInlineFormula(first.textContent ?? "");
+        const prose = nativeKatex && !nativeMath.closest("[data-enhanced-elm-math-repair]") ? texFromElement(nativeMath) : undefined;
+        const hasMathSyntax = /[\\^_=+\-*/{}]/.test(formula?.tex ?? "");
+        if (!nativeKatex || !formula || !hasMathSyntax || !isPlainNativeProse(prose ?? "") || !/^\d/.test(amount.textContent ?? "")) {
+          first = nativeMath;
+          continue;
+        }
+        const rendered = renderFormula({ tex: formula.tex, displayMode: false }, { inlineContainer: true });
+        if (!rendered) {
+          first = nativeMath;
+          continue;
+        }
+        rendered.dataset.enhancedElmMarkdownCompatibility = "";
+        const replacement = document.createDocumentFragment();
+        if (formula.prefix) replacement.append(document.createTextNode(formula.prefix));
+        replacement.append(rendered);
+        first.replaceWith(replacement);
+        nativeMath.replaceWith(document.createTextNode(` ${prose} `));
+        amount.textContent = `$${amount.textContent}`;
+        first = amount.nextSibling;
+      }
     }
   }
 
@@ -130,26 +227,54 @@
     }
   }
 
+  const FORMULA_BLOCK_SELECTOR = "p, li, div, blockquote, h1, h2, h3, h4, h5, h6";
+
+  function isFormulaBlock(block) {
+    if (!block.matches(FORMULA_BLOCK_SELECTOR)) return false;
+    if (block.closest("pre, code, [data-enhanced-elm-ui], [data-enhanced-elm-math-repair]")) return false;
+    /* Angular and Markdown add wrapper divs freely. Work from their innermost
+     * block children so sibling detection is based on the real Markdown blocks,
+     * rather than a flattened list containing both wrappers and their content. */
+    return !Array.from(block.children).some((child) => child.matches(FORMULA_BLOCK_SELECTOR));
+  }
+
+  function repairWholeDisplayBlocks(root) {
+    const blocks = Array.from(root.querySelectorAll(FORMULA_BLOCK_SELECTOR)).filter(isFormulaBlock);
+    for (const block of blocks) {
+      if (repaired.has(block)) continue;
+      /* Use textContent rather than an individual text node: Markdown frequently
+       * inserts <br> or <span> elements inside one visual display expression. */
+      const formula = parseDelimitedFormula(block.textContent ?? "");
+      if (!formula?.displayMode) continue;
+      const rendered = renderFormula(formula);
+      if (!rendered) continue;
+      repaired.add(block);
+      block.replaceWith(rendered);
+    }
+  }
+
   /* A display expression split into adjacent, formula-only Markdown blocks is
-   * safe to join. We intentionally cap this at three blocks and reject prose. */
+   * safe to join. The previous flattened-node approach could see wrapper divs
+   * between adjacent <p> siblings and therefore never join the two delimiter
+   * halves. Iterate through actual sibling blocks instead. */
   function repairSplitDisplayBlocks(root) {
-    const blocks = Array.from(root.querySelectorAll("p, li, div")).filter(
-      (block) => !block.closest("pre, code, [data-enhanced-elm-ui]")
-    );
-    for (let index = 0; index < blocks.length; index += 1) {
-      const first = blocks[index];
+    const blocks = Array.from(root.querySelectorAll(FORMULA_BLOCK_SELECTOR)).filter(isFormulaBlock);
+    const blockSet = new Set(blocks);
+    for (const first of blocks) {
       if (repaired.has(first)) continue;
       const firstText = first.textContent.trim();
       if (!(firstText.startsWith("$$") || firstText.startsWith("\\[")) || firstText.endsWith("$$") || firstText.endsWith("\\]")) continue;
       const group = [first];
       let combined = firstText;
-      for (let next = index + 1; next < Math.min(index + 3, blocks.length); next += 1) {
-        if (blocks[next].previousElementSibling !== group.at(-1)) break;
-        const text = blocks[next].textContent.trim();
+      let next = first.nextElementSibling;
+      while (next && group.length < 4) {
+        if (!blockSet.has(next)) break;
+        const text = next.textContent.trim();
         if (!text || text.length > 4000) break;
-        group.push(blocks[next]);
+        group.push(next);
         combined += `\n${text}`;
         if (combined.endsWith("$$") || combined.endsWith("\\]")) break;
+        next = next.nextElementSibling;
       }
       const rendered = renderFormula(parseDelimitedFormula(combined));
       if (!rendered) continue;
@@ -166,7 +291,10 @@
     repairSplitCelsiusRanges(app.query);
     repairCodeWrappedFormulae(app.query);
     repairDelimitedFormulaSegments(app.query);
+    repairAdjacentTextFormulaSegments(app.query);
+    if (app.state.settings.markdownCompatibility) repairEscapedCurrencyMarkdownConflict(app.query);
     repairStandaloneTextFormulae(app.query);
+    repairWholeDisplayBlocks(app.query);
     repairSplitDisplayBlocks(app.query);
   }
 

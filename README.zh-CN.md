@@ -2,11 +2,15 @@
 
 > 面向 [ELM](https://elm.edina.ac.uk/elm-new) 的本地优先效率增强扩展。
 
-[English](README.md) · [架构说明](docs/architecture.md) · [隐私政策](docs/PRIVACY.md) · [参与贡献](CONTRIBUTING.md)
+[English](README.md) · [测试者快速指南](docs/TESTER-GUIDE.md) · [架构说明](docs/architecture.md) · [隐私政策](docs/PRIVACY.md) · [参与贡献](CONTRIBUTING.md)
 
 Enhanced ELM 仅在 ELM 的 **New look** 中提供更紧凑、更易读的工作区，不替换 ELM 的对话和模型逻辑。所有功能均在浏览器本地运行；不包含服务器、分析、远程配置或云同步。
 
 > Enhanced ELM 是独立项目，与爱丁堡大学、EDINA 或 ELM 没有隶属、背书或运营关系。
+
+## 本地字体
+
+Enhanced ELM 保留 ELM 原生的界面与正文阅读字体；仅为代码块和其他明确的等宽内容本地提供 CaskaydiaCove Nerd Font。不会向 Google Fonts 或其他第三方字体服务发送请求；数学公式和 Material 图标保留各自专用字体。
 
 ## 功能
 
@@ -60,4 +64,4 @@ Enhanced ELM 仅在 ELM 的 **New look** 中提供更紧凑、更易读的工作
 
 ## 许可证
 
-Enhanced ELM 使用 [MIT License](LICENSE) 发布。KaTeX 与字体保留其原始 MIT 声明，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+Enhanced ELM 使用 [MIT License](LICENSE) 发布。KaTeX 保留其 MIT 许可证，字体保留各自的 SIL Open Font License 1.1；见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

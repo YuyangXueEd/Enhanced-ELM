@@ -3,6 +3,11 @@
 *.crx
 *.pem
 
+# Downloaded font references not used by the extension release package
+src/vendor/fonts/CaskaydiaCoveNFP-*.ttf
+src/vendor/fonts/NowarSans-*.ttf
+src/vendor/fonts/LICENSE-Nowar-Sans.txt
+
 # Editor and operating-system state
 .DS_Store
 Thumbs.db

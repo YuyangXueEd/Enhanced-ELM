@@ -2,7 +2,9 @@
  * Enhanced ELM adjusts presentation only. It deliberately does not replace
  * Angular event handlers, intercept network traffic, or read chat contents.
  */
+
 :root.elm-clean-mode {
+  --elm-clean-font-mono: "Enhanced ELM Mono", "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
   --elm-clean-surface: #ffffff;
   --elm-clean-canvas: #f4f6f4;
   --elm-clean-surface-raised: #ffffff;
@@ -107,6 +109,11 @@
 :root.elm-clean-mode body {
   background: var(--elm-clean-canvas);
   color: var(--elm-clean-ink);
+}
+
+:root.elm-clean-mode :is(pre, code, kbd, samp) {
+  font-family: var(--elm-clean-font-mono) !important;
+  font-variant-ligatures: none;
 }
 
 :root.elm-clean-mode .mat-drawer-container,

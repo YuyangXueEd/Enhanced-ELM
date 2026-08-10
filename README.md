@@ -46,6 +46,10 @@ Read the complete [privacy policy](docs/PRIVACY.md) before publishing to a store
 
 Math Repair is intentionally conservative. It renders only a complete formula that KaTeX can validate. It does not guess through prose, run remote code, or replace arbitrary page content. If a formula cannot be safely parsed, Enhanced ELM leaves the original text visible. KaTeX 0.17.0 is bundled inside the extension; see [third-party notices](THIRD_PARTY_NOTICES.md).
 
+## Local typography
+
+Enhanced ELM preserves ELM's native interface and reading fonts. It bundles CaskaydiaCove Nerd Font locally for code and other explicit monospace content only. No font request is made to Google Fonts or any other third-party service. Formula rendering and Material icons retain their own dedicated fonts.
+
 If [ELM Math Fixer](https://github.com/lambdacdm/ELM-Math-Fixer) is also installed, use one math-repair extension at a time while comparing results; both extensions may try to repair the same visible fragments.
 
 ## Development
