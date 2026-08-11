@@ -954,40 +954,134 @@
   position: fixed;
   z-index: 4;
   top: 50%;
-  right: 10px;
+  left: 10px;
   display: grid;
-  max-height: min(52vh, 360px);
-  padding: 3px;
+  transform: translateY(-50%);
+  background: transparent;
+}
+
+/* The rail lives on the content edge when the sidebar is open. It keeps a
+ * constant footprint regardless of how many messages the chat contains. */
+:root.elm-clean-mode:has(mat-drawer.elm-sidebar.mat-drawer-opened) [data-elm-clean-timeline] {
+  left: calc(var(--elm-clean-sidebar-width) + 10px);
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline][hidden] {
+  display: none;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-list {
+  display: grid;
+  width: 26px;
+  max-height: min(58vh, 440px);
+  gap: 4px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-list::-webkit-scrollbar {
+  display: none;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-preview {
+  position: absolute;
+  z-index: 1;
+  left: 32px;
+  width: min(320px, calc(100vw - 52px));
+  padding: 8px 10px;
   transform: translateY(-50%);
   border: 1px solid var(--elm-clean-line);
-  border-radius: 10px;
+  border-radius: 9px;
   background: var(--elm-clean-surface-raised);
-  box-shadow: 0 6px 16px rgb(0 0 0 / 12%);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 14%);
+  color: var(--elm-clean-ink);
+  font-size: 0.74rem;
+  line-height: 1.35;
+  pointer-events: none;
 }
 
-:root.elm-clean-mode [data-elm-clean-timeline] button {
+:root.elm-clean-mode:has(mat-drawer.elm-sidebar.mat-drawer-opened) [data-elm-clean-timeline] .elm-clean-timeline-preview {
+  width: min(320px, calc(100vw - var(--elm-clean-sidebar-width) - 52px));
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-preview[hidden] {
+  display: none;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-preview-line {
   display: grid;
-  width: 24px;
-  min-width: 24px;
-  height: 24px;
-  padding: 0;
-  place-items: center;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 6px;
+  align-items: start;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-preview-line + .elm-clean-timeline-preview-line {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid var(--elm-clean-line);
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-preview-line strong {
   color: var(--elm-clean-muted);
-  font-size: 0.66rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-:root.elm-clean-mode [data-elm-clean-timeline] button:hover,
-:root.elm-clean-mode [data-elm-clean-timeline] button:focus-visible {
-  background: var(--elm-clean-surface-subtle);
-  color: var(--elm-clean-accent);
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-preview-line span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-user {
-  color: var(--elm-clean-accent);
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-node {
+  position: relative;
+  display: block;
+  width: 26px;
+  min-width: 26px;
+  height: 7px;
+  min-height: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-node::before {
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  width: 8px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--elm-clean-line);
+  content: "";
+  transition: width 120ms ease, background-color 120ms ease, transform 120ms ease;
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-user::before {
+  background: color-mix(in srgb, var(--elm-clean-accent) 52%, var(--elm-clean-line));
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-node:hover::before,
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-node:focus-visible::before {
+  width: 17px;
+  background: var(--elm-clean-accent);
+  transform: translateX(-4px);
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-node[data-elm-clean-timeline-current]::before {
+  width: 22px;
+  background: var(--elm-clean-ink);
+  transform: translateX(-7px);
+}
+
+:root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-node:focus-visible {
+  outline: 2px solid var(--elm-clean-focus-ring);
+  outline-offset: 1px;
 }
 
 :root.elm-clean-mode .katex-display {
@@ -1226,8 +1320,8 @@
     padding-block: 6px !important;
   }
 
-  :root.elm-clean-mode [data-elm-clean-timeline] {
-    max-height: min(44vh, 280px);
+  :root.elm-clean-mode [data-elm-clean-timeline] .elm-clean-timeline-list {
+    max-height: min(40vh, 250px);
   }
 }
 

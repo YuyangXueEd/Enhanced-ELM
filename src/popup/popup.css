@@ -63,6 +63,11 @@ section { padding-top: 6px; }
   cursor: pointer;
 }
 
+.setting-row > span {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 strong, small { display: block; }
 strong { font-size: 13px; }
 small { margin-top: 3px; font-size: 12px; line-height: 1.35; }
@@ -76,6 +81,8 @@ input[role="switch"] {
   border-radius: 999px;
   background: #d9e1dc;
   cursor: pointer;
+  flex: 0 0 38px;
+  min-width: 38px;
   transition: background 150ms ease;
 }
 

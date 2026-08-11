@@ -30,6 +30,7 @@
     if (!card || card.dataset.enhancedElmScrollLock) return;
     const reset = () => {
       if (!app.state.settings.enabled || !card.isConnected) return;
+      if (Date.now() < app.state.scrollLockPausedUntil) return;
       if (card.scrollTop) card.scrollTop = 0;
       if (card.scrollLeft) card.scrollLeft = 0;
     };

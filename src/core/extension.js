@@ -2,7 +2,8 @@
   const { DEFAULT_SETTINGS, normaliseSettings } = globalThis.EnhancedELMSettings;
   const state = {
     settings: normaliseSettings(DEFAULT_SETTINGS),
-    toastTimer: undefined
+    toastTimer: undefined,
+    scrollLockPausedUntil: 0
   };
 
   function showToast(message) {
@@ -27,11 +28,16 @@
     document.querySelectorAll("[data-enhanced-elm-ui]").forEach((element) => element.remove());
   }
 
+  function pauseScrollLock(duration = 900) {
+    state.scrollLockPausedUntil = Date.now() + duration;
+  }
+
   globalThis.EnhancedELM = {
     state,
     features: Object.create(null),
     showToast,
     removeInjectedUi,
+    pauseScrollLock,
     get query() {
       return document.querySelector("edh-elm-query");
     }

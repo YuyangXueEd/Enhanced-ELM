@@ -1,0 +1,46 @@
+<!doctype html>
+<html class="elm-clean-mode" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Enhanced ELM timeline stress fixture</title>
+    <link rel="stylesheet" href="../src/content.css">
+    <style>
+      body { margin: 0; padding: 28px 48px; font: 16px/1.45 system-ui, sans-serif; }
+      .fixture-shell { max-width: 760px; margin: 0 auto; }
+      .response { width: 76%; min-height: 58px; margin: 14px 0; padding: 14px; border: 1px solid #d9e1dc; border-radius: 12px; background: #fff; }
+      .response-ai { margin-right: auto; }
+      .response:not(.response-ai) { margin-left: auto; background: #edf3ef; }
+    </style>
+  </head>
+  <body>
+    <main class="fixture-shell">
+      <h1>Timeline stress fixture</h1>
+      <p>120 messages, grouped into 60 conversation-turn markers.</p>
+      <edh-elm-query><div class="query-response"></div></edh-elm-query>
+    </main>
+    <script>
+      globalThis.EnhancedELM = {
+        dom: { textFromNode: (node) => node.textContent || "" },
+        features: Object.create(null),
+        state: { settings: { enabled: true } },
+        pauseScrollLock: () => {}
+      };
+      const query = document.querySelector(".query-response");
+      for (let index = 1; index <= 60; index += 1) {
+        const user = document.createElement("article");
+        user.className = "response";
+        user.textContent = `Question ${index}: explain the practical implication of this research finding in a few precise words.`;
+        const reply = document.createElement("article");
+        reply.className = "response response-ai";
+        reply.textContent = `Response ${index}: this is the short beginning of ELM's answer, followed by enough fixture text to test preview clamping and scrolling.`;
+        query.append(user, reply);
+      }
+    </script>
+    <script src="../src/features/timeline.js"></script>
+    <script>
+      EnhancedELM.features.timeline.init();
+      EnhancedELM.features.timeline.mark();
+    </script>
+  </body>
+</html>

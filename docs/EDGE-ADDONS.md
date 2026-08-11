@@ -1,6 +1,6 @@
 # Microsoft Edge Add-ons submission checklist
 
-Enhanced ELM uses the same validated `Enhanced-ELM-0.1.1.zip` package for Microsoft Edge Add-ons as for the Chrome Web Store. Edge Add-ons accepts extension ZIP packages and converts them for distribution.
+Enhanced ELM uses the same validated `Enhanced-ELM-0.1.2.zip` package for Microsoft Edge Add-ons as for the Chrome Web Store. Edge Add-ons accepts extension ZIP packages and converts them for distribution.
 
 ## Partner Center fields
 
@@ -20,7 +20,7 @@ Use these Edge-specific answers:
 ## Submission sequence
 
 1. Register and verify the publisher account in Microsoft Partner Center.
-2. Create a Microsoft Edge Add-ons extension submission and upload `Enhanced-ELM-0.1.1.zip`.
+2. Create a Microsoft Edge Add-ons extension submission and upload `Enhanced-ELM-0.1.2.zip`.
 3. Complete the Properties, Privacy, and Store listings pages with the values above.
 4. Upload the scrubbed 1280 × 800 screenshots. Optional tiles may use 440 × 280 and 1400 × 560 PNG files.
 5. Submit for certification with deferred publication if that option is available, then test the certified package before releasing it publicly.

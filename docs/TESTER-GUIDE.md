@@ -4,7 +4,7 @@
 
 ## 1. 获取并解压测试包
 
-下载 `Enhanced-ELM-0.1.1.zip`，将其解压到一个不会被移动或删除的文件夹。
+下载 `Enhanced-ELM-0.1.2.zip`，将其解压到一个不会被移动或删除的文件夹。
 
 解压后的文件夹内应能直接看到 `manifest.json`、`src` 和 `assets`。加载扩展时请选择这个文件夹，不要选择 ZIP 文件本身。
 
@@ -16,7 +16,7 @@
 4. 选择上一节中包含 `manifest.json` 的解压文件夹。
 5. 如有需要，点击扩展卡片上的图钉，将 **Enhanced ELM** 固定到工具栏。
 
-Chrome 应显示 Enhanced ELM `0.1.1`，且没有红色错误提示。
+Chrome 应显示 Enhanced ELM `0.1.2`，且没有红色错误提示。
 
 ## 3. 打开 ELM
 

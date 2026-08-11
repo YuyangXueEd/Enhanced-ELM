@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 — 11 August 2026
+
+- Replaced the numbered timeline panel with a fixed-width, left-edge conversation rail that remains compact even in long chats.
+- Grouped timeline markers into conversation turns and added local hover/focus previews of the user prompt and the opening of ELM's reply.
+- Made the current reading position a distinct, longer marker; timeline jumps no longer fight ELM's outer scroll lock.
+- Added a 120-message visual stress fixture for the timeline and documented its regression checks.
+- Prevented long popup setting descriptions from shrinking or clipping their corresponding switches.
+
 ## 0.1.1 — 10 August 2026
 
 - Preserved ELM's original UI and reading fonts; CaskaydiaCove Mono now applies only to code and other explicitly monospace content.

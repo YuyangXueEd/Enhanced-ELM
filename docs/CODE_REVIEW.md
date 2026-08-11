@@ -1,6 +1,6 @@
-# 0.1.1 code review
+# 0.1.2 code review
 
-Reviewed: 7 August 2026
+Reviewed: 11 August 2026
 
 ## Findings resolved
 
@@ -14,13 +14,19 @@ Reviewed: 7 August 2026
 | Extension disable could leave model observer state disconnected. | Model feature now resets/reconnects its observer state on the next enable. |
 | Clearing a model preference attempted to store `undefined`. | Uses `chrome.storage.local.remove` through the shared storage helper. |
 | Attached files reserved a large full-width row beneath the composer. | Keeps ELM's native file widget and View All action, but docks it as a count-badged lower-right hover/focus popup outside normal layout. |
+| A numbered timeline grew horizontally as conversations grew and competed with the reading column. | Replaced it with a fixed 26px left-edge rail whose marker list scrolls only vertically. |
+| A timeline click could be counteracted by the outer-card scroll guard. | The shared lifecycle now briefly pauses that guard for an explicit timeline jump. |
+| Preview text included ELM avatar and extension-tool labels. | Timeline previews clone only the message body, remove controls and duplicate KaTeX semantic layers, then render a local two-line prompt/reply summary. |
+| Long popup descriptions could compress switches beyond their visible width. | The text column may shrink while each switch retains a 38px flex basis. |
 
 ## Checks completed
 
-- `manifest.json` parses, contains **Enhanced ELM** version **0.1.1**, has only the `storage` permission, and all declared resources exist.
+- `manifest.json` parses, contains **Enhanced ELM** version **0.1.2**, has only the `storage` permission, and all declared resources exist.
 - `node --check` passes for every non-vendor JavaScript file.
 - A no-network scan finds no `fetch`, XHR, WebSocket, beacon, or HTTP URL in first-party source code.
 - Bundled KaTeX validated four representative inputs: Celsius range, quadratic formula, aligned equations, and summation.
+- On the live ELM New look page, verified clean prompt/reply previews, rail placement with the sidebar open and closed, timeline jump visibility, current-marker state, no horizontal overflow, and no console errors.
+- The 120-message/60-turn `tests/timeline-stress.html` fixture exercises the rail's bounded vertical marker list without affecting packaged extension files.
 - Documentation, store checklist, privacy policy, MIT license, and KaTeX third-party notice are present.
 
 ## Release-test items requiring the unpacked browser extension

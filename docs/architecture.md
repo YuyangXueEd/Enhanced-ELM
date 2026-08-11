@@ -31,7 +31,7 @@ The extension is Manifest V3 and intentionally buildless. Content scripts run in
 | `src/features/markdown-tools.js` | DOM-to-Markdown serialisation and copy tools | None |
 | `src/features/workspace-library.js` | Snapshot dialog, folders/tags/search, Markdown download | workspace snapshots/folders |
 | `src/features/bookmarks.js` | Key-message buttons, local notes, sidebar jump list | workspace bookmarks |
-| `src/features/timeline.js` | Visible-message navigation rail | None |
+| `src/features/timeline.js` | Visible-turn navigation rail with local hover previews | None |
 | `src/features/sidebar-footer.js` | Moves ELM-owned footer content into normal sidebar flow | None |
 | `src/content.js` | Applies root classes, marks stable ELM surfaces, observes route rendering | None |
 
