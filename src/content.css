@@ -293,8 +293,8 @@
   display: none;
 }
 
-/* Make the sidebar a true column. Its history can scroll independently while
- * Library and the institutional footer retain their place in normal layout. */
+/* Make the sidebar a true column. History gets the remaining scrollable space;
+ * Library and the institutional footer retain their own usable footprint. */
 :root.elm-clean-mode mat-drawer.elm-sidebar .mat-drawer-inner-container,
 :root.elm-clean-mode mat-drawer.elm-sidebar .sidemenu-container {
   min-height: 0;
@@ -308,7 +308,7 @@
 }
 
 :root.elm-clean-mode mat-drawer.elm-sidebar edh-elm-chat-history-menu-view {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-height: 0;
   overflow-y: auto !important;
 }
@@ -855,12 +855,68 @@
 /* Local snapshots sit beneath ELM's own recent-chat list. They are deliberately
  * title-first: folders and tags are secondary metadata, not a second sidebar. */
 :root.elm-clean-mode [data-elm-clean-library] {
-  flex: 0 1 auto;
-  max-height: min(30vh, 260px);
+  flex: 0 0 auto;
+  height: var(--enhanced-elm-library-height, auto);
+  max-height: var(--enhanced-elm-library-max-height, 300px);
   margin: 8px;
   overflow-y: auto;
   padding-top: 8px;
   border-top: 1px solid var(--elm-clean-line);
+}
+
+/* Never let a long native chat list compress away the local Library. A user
+ * can collapse it to a single heading when reading-room is more important. */
+:root.elm-clean-mode [data-elm-clean-library][data-elm-clean-library-collapsed] {
+  height: auto !important;
+  max-height: none;
+  margin-block: 6px 4px;
+  overflow: visible;
+  padding-top: 4px;
+}
+
+:root.elm-clean-mode [data-elm-clean-library][data-elm-clean-library-collapsed] :is(.enhanced-elm-library-search, [data-enhanced-elm-library-list]) {
+  display: none;
+}
+
+:root.elm-clean-mode [data-enhanced-elm-library-resizer] {
+  position: relative;
+  height: 10px;
+  margin: -8px 0 2px;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+:root.elm-clean-mode [data-enhanced-elm-library-resizer]::after {
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  left: 12px;
+  height: 1px;
+  border-radius: 999px;
+  background: var(--elm-clean-line);
+  content: "";
+  transition: height 120ms ease, background-color 120ms ease;
+}
+
+:root.elm-clean-mode [data-enhanced-elm-library-resizer]:hover::after,
+:root.elm-clean-mode [data-enhanced-elm-library-resizer]:focus-visible::after {
+  height: 2px;
+  background: var(--elm-clean-accent);
+}
+
+:root.elm-clean-mode [data-enhanced-elm-library-resizer]:focus-visible {
+  outline: 2px solid var(--elm-clean-focus-ring);
+  outline-offset: 1px;
+}
+
+:root.elm-clean-mode [data-elm-clean-library-collapsed] [data-enhanced-elm-library-resizer] {
+  display: none;
+}
+
+:root.enhanced-elm-library-resizing,
+:root.enhanced-elm-library-resizing * {
+  cursor: ns-resize !important;
+  user-select: none !important;
 }
 
 :root.elm-clean-mode .elm-clean-library-heading {

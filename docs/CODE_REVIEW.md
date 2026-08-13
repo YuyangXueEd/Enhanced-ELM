@@ -1,6 +1,6 @@
-# 0.1.2 code review
+# 0.1.3 code review
 
-Reviewed: 11 August 2026
+Reviewed: 13 August 2026
 
 ## Findings resolved
 
@@ -18,15 +18,19 @@ Reviewed: 11 August 2026
 | A timeline click could be counteracted by the outer-card scroll guard. | The shared lifecycle now briefly pauses that guard for an explicit timeline jump. |
 | Preview text included ELM avatar and extension-tool labels. | Timeline previews clone only the message body, remove controls and duplicate KaTeX semantic layers, then render a local two-line prompt/reply summary. |
 | Long popup descriptions could compress switches beyond their visible width. | The text column may shrink while each switch retains a 38px flex basis. |
+| A long native chat list could squeeze the local Library and institutional footer. | Sidebar history now receives only remaining space and scrolls independently; Library has a bounded scroll region. |
+| Library layout could not be tailored to a user's chat/snapshot balance. | Added a bounded pointer and keyboard resizer, plus a local collapsed-state preference. Content-box sizing, padding, and margins are calculated consistently to avoid drag drift. |
+| Reloading an unpacked extension could leave an old page context attempting a late storage write. | Every local-storage call first checks the extension context and resolves as a harmless no-op if it is gone; startup uses the same wrapper and Library tasks never leave a rejected Promise unhandled. |
 
 ## Checks completed
 
-- `manifest.json` parses, contains **Enhanced ELM** version **0.1.2**, has only the `storage` permission, and all declared resources exist.
+- `manifest.json` parses, contains **Enhanced ELM** version **0.1.3**, has only the `storage` permission, and all declared resources exist.
 - `node --check` passes for every non-vendor JavaScript file.
 - A no-network scan finds no `fetch`, XHR, WebSocket, beacon, or HTTP URL in first-party source code.
 - Bundled KaTeX validated four representative inputs: Celsius range, quadratic formula, aligned equations, and summation.
-- On the live ELM New look page, verified clean prompt/reply previews, rail placement with the sidebar open and closed, timeline jump visibility, current-marker state, no horizontal overflow, and no console errors.
+- On the live ELM workspace, verified clean prompt/reply previews, rail placement with the sidebar open and closed, timeline jump visibility, current-marker state, no horizontal overflow, and no console errors.
 - The 120-message/60-turn `tests/timeline-stress.html` fixture exercises the rail's bounded vertical marker list without affecting packaged extension files.
+- The 100-chat/12-snapshot `tests/sidebar-library-stress.html` fixture confirms independent Library/history scrolling, bounded drag resizing, keyboard Home/End controls, collapsed state, no horizontal overflow, and visible footer at 1280 × 800 and 1512 × 982.
 - Documentation, store checklist, privacy policy, MIT license, and KaTeX third-party notice are present.
 
 ## Release-test items requiring the unpacked browser extension

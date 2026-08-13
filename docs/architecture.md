@@ -8,7 +8,7 @@ Chrome / Edge
   │   └─ Enhanced ELM presentation and feature settings
   ├─ Background service worker
   │   └─ default-setting migration only
-  └─ Content scripts on elm.edina.ac.uk/elm-new*
+  └─ Content scripts on elm.edina.ac.uk/elm*
       ├─ core/          lifecycle, DOM helpers, local workspace store
       ├─ vendor/katex/  bundled local math renderer
       ├─ features/      independent interface enhancements
@@ -41,10 +41,12 @@ This division is intentional: features may call the shared DOM and workspace API
 
 ```json
 {
-  "version": 2,
+  "version": 3,
   "folders": [{ "id": "inbox", "name": "Inbox" }],
   "snapshots": [{ "id": "…", "title": "…", "folderId": "inbox", "tags": [], "markdown": "…" }],
-  "bookmarks": [{ "id": "…", "conversationId": "…", "messageId": "…", "role": "ELM", "excerpt": "…", "note": "…" }]
+  "bookmarks": [{ "id": "…", "conversationId": "…", "messageId": "…", "role": "ELM", "excerpt": "…", "note": "…" }],
+  "libraryCollapsed": false,
+  "libraryHeight": 240
 }
 ```
 

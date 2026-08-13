@@ -1,4 +1,4 @@
-# Store listing copy — Enhanced ELM 0.1.2
+# Store listing copy — Enhanced ELM 0.1.3
 
 Use this document as the single source of truth for Chrome Web Store and Microsoft Edge Add-ons metadata. Do not claim affiliation with The University of Edinburgh, EDINA, or ELM.
 
@@ -7,22 +7,22 @@ Use this document as the single source of truth for Chrome Web Store and Microso
 | Field | Value |
 | --- | --- |
 | Product name | Enhanced ELM |
-| Version | 0.1.2 |
+| Version | 0.1.3 |
 | Category | Productivity |
 | Homepage | `https://github.com/YuyangXueEd/Enhanced-ELM` |
 | Support URL | `https://github.com/YuyangXueEd/Enhanced-ELM/issues` |
 | Privacy policy URL | `https://github.com/YuyangXueEd/Enhanced-ELM/blob/main/docs/PRIVACY.md` — publish the repository before using this URL |
-| Extension scope | ELM **New look** at `https://elm.edina.ac.uk/elm-new` only |
+| Extension scope | Current ELM workspace at `https://elm.edina.ac.uk/elm` |
 
 ## English listing
 
 ### Short description
 
-Local-first productivity enhancements for ELM New look conversations.
+Local-first productivity enhancements for ELM conversations.
 
 ### Detailed description
 
-Enhanced ELM is an independent, local-first productivity extension for ELM New look.
+Enhanced ELM is an independent, local-first productivity extension for ELM.
 
 It gives ELM a compact, readable workspace while preserving ELM's own conversation, model, and account logic. Features include a Family-to-native-Model workflow, a local default-model preference, a local snapshot library with folders and tags, message bookmarks and notes, timeline navigation, Markdown/code/LaTeX copy, Markdown conversation download, and conservative local Math Repair with KaTeX.
 
@@ -36,11 +36,11 @@ Enhanced ELM is not affiliated with, endorsed by, or operated by The University 
 
 ### 简短说明
 
-为 ELM New look 对话提供本地优先的效率增强功能。
+为 ELM 对话提供本地优先的效率增强功能。
 
 ### 详细说明
 
-Enhanced ELM 是面向 ELM New look 的独立、本地优先效率增强扩展。它在不替换 ELM 对话、模型或账户逻辑的前提下，提供更紧凑、更易读的工作区。
+Enhanced ELM 是面向 ELM 的独立、本地优先效率增强扩展。它在不替换 ELM 对话、模型或账户逻辑的前提下，提供更紧凑、更易读的工作区。
 
 功能包括模型家族到 ELM 原生模型的工作流、本地默认模型偏好、支持文件夹和标签的本地快照库、关键消息书签和笔记、时间线导航、Markdown/代码/LaTeX 复制、对话 Markdown 下载，以及基于 KaTeX 的保守数学公式修复。
 
@@ -52,7 +52,7 @@ Enhanced ELM 与爱丁堡大学、EDINA 或 ELM 没有隶属、背书或运营�
 
 Use truthful answers that match the release package:
 
-- **Single purpose:** Provide a compact, local-first productivity workspace for ELM New look conversations.
+- **Single purpose:** Provide a compact, local-first productivity workspace for ELM conversations.
 - **Permissions:** `storage` stores preferences and user-requested local snapshots, bookmarks, folders, tags, notes, and default-model preference. The ELM host permission is limited to applying visible enhancements and local tools on `elm.edina.ac.uk`.
 - **User data:** The extension handles visible ELM website content and user-generated conversation text locally to provide features the user invokes. It does not transmit, sell, share, or use that data for analytics or advertising.
 - **Remote code:** No. All JavaScript, KaTeX, and font resources are packaged with the extension.
@@ -60,7 +60,7 @@ Use truthful answers that match the release package:
 
 ## Reviewer instructions
 
-Enhanced ELM is active only after an authorised ELM user opens `https://elm.edina.ac.uk/elm-new` and switches on ELM **New look**. It requires no account, credential, or setup beyond the ELM service itself. All enhancements run client-side; no test credential is requested or stored by Enhanced ELM.
+Enhanced ELM is active only after an authorised ELM user opens `https://elm.edina.ac.uk/elm`. It requires no account, credential, or setup beyond the ELM service itself. All enhancements run client-side; no test credential is requested or stored by Enhanced ELM.
 
 ## Asset plan
 
@@ -81,5 +81,5 @@ Use only scrubbed demonstration conversations. Never include student, research, 
 
 1. Publish the GitHub repository so the privacy-policy and support URLs are publicly reachable.
 2. Set a monitored publisher support email in each dashboard.
-3. Upload the validated `Enhanced-ELM-0.1.2.zip` with `manifest.json` at its root.
+3. Upload the validated `Enhanced-ELM-0.1.3.zip` with `manifest.json` at its root.
 4. Use deferred/staged publication and re-test the reviewed package before public release.

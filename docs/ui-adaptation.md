@@ -1,10 +1,11 @@
 # ELM UI adaptation map
 
-Enhanced ELM targets the production Angular page at `https://elm.edina.ac.uk/elm-new` using stable custom elements and semantic classes rather than generated Angular attributes.
+Enhanced ELM targets the production Angular page at `https://elm.edina.ac.uk/elm` using stable custom elements and semantic classes rather than generated Angular attributes. The `elm*` manifest match also retains compatibility with the retiring `/elm-new` route.
 
 | Surface | ELM hook | Enhanced ELM treatment |
 | --- | --- | --- |
 | Composer | `edh-elm-input`, `.query-form-container`, `.query-form` | Compact surface, no redundant inner focus outline, bottom-pinned empty state. |
+| Local Library | `mat-drawer.elm-sidebar .sidemenu-container` | A bounded local-snapshot panel beneath native history. Its chevron collapses it to one row; a keyboard-accessible horizontal handle resizes it. Both choices remain local, so long native histories cannot compress it away. |
 | Attached files | `edh-file-bar-widget` | Removes ELM's full-width attachment bar from layout; shows a fixed lower-right paperclip button with count and a hover/focus popup. |
 | Model control | Composer button containing `mat-icon` `memory` | ELM remains the native model selector; a family filter and default-model star are inserted before it. |
 | Native model menu | `.model-source-subheader`, `button[role="menuitem"]` | Filters the menu to the selected provider family and clicks only a native menu item. |

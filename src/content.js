@@ -3,6 +3,7 @@
   const { SETTINGS_KEY, LEGACY_SETTINGS_KEY, DEFAULT_SETTINGS, normaliseSettings } = globalThis.EnhancedELMSettings;
   let observer;
   let markingQueued = false;
+  document.documentElement.dataset.enhancedElmVersion = app.version;
 
   function markBaseUi() {
     document.querySelector("edh-elm-input")?.setAttribute("data-elm-clean-composer", "");
@@ -74,15 +75,23 @@
     scheduleMarking();
   }
 
-  chrome.storage.local.get({ [SETTINGS_KEY]: undefined, [LEGACY_SETTINGS_KEY]: undefined }, async (result) => {
-    const initialSettings = normaliseSettings(result[SETTINGS_KEY] ?? result[LEGACY_SETTINGS_KEY] ?? DEFAULT_SETTINGS);
-    if (!result[SETTINGS_KEY] && result[LEGACY_SETTINGS_KEY]) chrome.storage.local.set({ [SETTINGS_KEY]: initialSettings });
+  async function initialise() {
+    const savedSettings = await app.dom.storageGet(SETTINGS_KEY, undefined);
+    const legacySettings = savedSettings === undefined
+      ? await app.dom.storageGet(LEGACY_SETTINGS_KEY, undefined)
+      : undefined;
+    const initialSettings = normaliseSettings(savedSettings ?? legacySettings ?? DEFAULT_SETTINGS);
+    if (savedSettings === undefined && legacySettings !== undefined) {
+      await app.dom.storageSet(SETTINGS_KEY, initialSettings);
+    }
     applySettings(initialSettings);
     observe();
     await app.workspaceStore.load();
     for (const feature of Object.values(app.features)) feature.init?.();
     scheduleMarking();
-  });
+  }
+
+  void initialise();
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === "local" && changes[SETTINGS_KEY]) applySettings(changes[SETTINGS_KEY].newValue ?? DEFAULT_SETTINGS);

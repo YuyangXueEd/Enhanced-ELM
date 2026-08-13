@@ -3,9 +3,165 @@
   const store = app.workspaceStore;
   const { makeId } = app.dom;
   const MAX_SNAPSHOT_CHARACTERS = 240000;
+  const MIN_LIBRARY_HEIGHT = 92;
+  const MAX_LIBRARY_HEIGHT = 440;
+  const RESIZE_STEP = 24;
   let pendingSnapshot;
   let renderTarget;
   let renderSignature = "";
+
+  function reportActionError(error) {
+    if (String(error?.message ?? error).includes("Extension context invalidated")) return;
+    console.error("Enhanced ELM Library action failed", error);
+  }
+
+  function runAction(task) {
+    void task.catch(reportActionError);
+  }
+
+  function applyCollapsedState(section) {
+    const collapsed = Boolean(store.value.libraryCollapsed);
+    const toggle = section.querySelector("[data-enhanced-elm-library-toggle]");
+    section.toggleAttribute("data-elm-clean-library-collapsed", collapsed);
+    if (!toggle) return;
+    toggle.textContent = collapsed ? "expand_more" : "expand_less";
+    toggle.title = collapsed ? "Expand Library" : "Collapse Library";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+  }
+
+  function libraryHeightBounds(section) {
+    const sidebar = section.closest(".sidemenu-container");
+    const history = sidebar?.querySelector("edh-elm-chat-history-menu-view");
+    if (!sidebar || !history) return { min: MIN_LIBRARY_HEIGHT, max: MAX_LIBRARY_HEIGHT };
+    const fixedHeight = [...sidebar.children]
+      .filter((child) => child !== section && child !== history)
+      .reduce((total, child) => total + elementLayoutHeight(child), 0);
+    const max = Math.min(MAX_LIBRARY_HEIGHT, Math.max(
+      MIN_LIBRARY_HEIGHT,
+      sidebar.clientHeight - fixedHeight - libraryLayoutOverhead(section) - 184
+    ));
+    return { min: MIN_LIBRARY_HEIGHT, max };
+  }
+
+  function pixelValue(value) {
+    return Number.parseFloat(value) || 0;
+  }
+
+  function elementLayoutHeight(element) {
+    const styles = getComputedStyle(element);
+    return element.getBoundingClientRect().height + pixelValue(styles.marginTop) + pixelValue(styles.marginBottom);
+  }
+
+  function libraryLayoutOverhead(section) {
+    const styles = getComputedStyle(section);
+    const margins = pixelValue(styles.marginTop) + pixelValue(styles.marginBottom);
+    if (styles.boxSizing === "border-box") return margins;
+    return margins + pixelValue(styles.paddingTop) + pixelValue(styles.paddingBottom)
+      + pixelValue(styles.borderTopWidth) + pixelValue(styles.borderBottomWidth);
+  }
+
+  function libraryContentHeight(section) {
+    const savedHeight = Number.parseFloat(section.style.getPropertyValue("--enhanced-elm-library-height"));
+    if (Number.isFinite(savedHeight)) return savedHeight;
+    const styles = getComputedStyle(section);
+    const borderBoxHeight = section.getBoundingClientRect().height;
+    if (styles.boxSizing === "border-box") return borderBoxHeight;
+    return borderBoxHeight - pixelValue(styles.paddingTop) - pixelValue(styles.paddingBottom)
+      - pixelValue(styles.borderTopWidth) - pixelValue(styles.borderBottomWidth);
+  }
+
+  function applyLibraryHeight(section) {
+    const height = store.value.libraryHeight;
+    const resizer = section.querySelector("[data-enhanced-elm-library-resizer]");
+    const bounds = libraryHeightBounds(section);
+    const nextHeight = Number.isFinite(height) ? Math.min(bounds.max, Math.max(bounds.min, height)) : undefined;
+    if (Number.isFinite(nextHeight)) {
+      section.style.setProperty("--enhanced-elm-library-height", `${nextHeight}px`);
+      section.style.setProperty("--enhanced-elm-library-max-height", `${MAX_LIBRARY_HEIGHT}px`);
+    } else {
+      section.style.removeProperty("--enhanced-elm-library-height");
+      section.style.removeProperty("--enhanced-elm-library-max-height");
+    }
+    if (!resizer) return;
+    updateResizerValue(section, Number.isFinite(nextHeight) ? nextHeight : libraryContentHeight(section), bounds);
+  }
+
+  function updateResizerValue(section, height, bounds = libraryHeightBounds(section)) {
+    const resizer = section.querySelector("[data-enhanced-elm-library-resizer]");
+    if (!resizer) return;
+    const current = Math.round(Math.min(bounds.max, Math.max(bounds.min, height)));
+    resizer.setAttribute("aria-valuemin", String(bounds.min));
+    resizer.setAttribute("aria-valuemax", String(bounds.max));
+    resizer.setAttribute("aria-valuenow", String(current));
+    resizer.setAttribute("aria-valuetext", `Library height ${current} pixels`);
+  }
+
+  function applyLibraryState(section) {
+    applyCollapsedState(section);
+    applyLibraryHeight(section);
+  }
+
+  async function persistLibraryHeight(section, height) {
+    const bounds = libraryHeightBounds(section);
+    const nextHeight = Math.round(Math.min(bounds.max, Math.max(bounds.min, height)));
+    section.style.setProperty("--enhanced-elm-library-height", `${nextHeight}px`);
+    section.style.setProperty("--enhanced-elm-library-max-height", `${MAX_LIBRARY_HEIGHT}px`);
+    await store.mutate((draft) => {
+      draft.libraryHeight = nextHeight;
+      return draft;
+    });
+  }
+
+  function beginResize(event) {
+    if (event.button !== 0) return;
+    const section = event.currentTarget.closest("[data-enhanced-elm-library]");
+    if (!section || section.hasAttribute("data-elm-clean-library-collapsed")) return;
+    const handle = event.currentTarget;
+    const startY = event.clientY;
+    const startHeight = libraryContentHeight(section);
+    let nextHeight = startHeight;
+    const move = (moveEvent) => {
+      const bounds = libraryHeightBounds(section);
+      nextHeight = Math.round(Math.min(bounds.max, Math.max(bounds.min, startHeight - (moveEvent.clientY - startY))));
+      section.style.setProperty("--enhanced-elm-library-height", `${nextHeight}px`);
+      section.style.setProperty("--enhanced-elm-library-max-height", `${MAX_LIBRARY_HEIGHT}px`);
+      updateResizerValue(section, nextHeight, bounds);
+    };
+    const finish = () => {
+      handle.removeEventListener("pointermove", move);
+      handle.removeEventListener("pointerup", finish);
+      handle.removeEventListener("pointercancel", cancel);
+      document.documentElement.classList.remove("enhanced-elm-library-resizing");
+      runAction(persistLibraryHeight(section, nextHeight));
+    };
+    const cancel = () => {
+      handle.removeEventListener("pointermove", move);
+      handle.removeEventListener("pointerup", finish);
+      handle.removeEventListener("pointercancel", cancel);
+      document.documentElement.classList.remove("enhanced-elm-library-resizing");
+      applyLibraryHeight(section);
+    };
+    event.preventDefault();
+    handle.setPointerCapture?.(event.pointerId);
+    document.documentElement.classList.add("enhanced-elm-library-resizing");
+    handle.addEventListener("pointermove", move);
+    handle.addEventListener("pointerup", finish);
+    handle.addEventListener("pointercancel", cancel);
+  }
+
+  function resizeWithKeyboard(event) {
+    if (!["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+    const section = event.currentTarget.closest("[data-enhanced-elm-library]");
+    if (!section || section.hasAttribute("data-elm-clean-library-collapsed")) return;
+    event.preventDefault();
+    const bounds = libraryHeightBounds(section);
+    const current = libraryContentHeight(section);
+    const next = event.key === "Home" ? bounds.min
+      : event.key === "End" ? bounds.max
+        : current + (event.key === "ArrowUp" ? RESIZE_STEP : -RESIZE_STEP);
+    runAction(persistLibraryHeight(section, next));
+  }
 
   function makeFilename(title) {
     const safe = title.replace(/[<>:"/\\|?*]+/g, "-").replace(/\s+/g, "-")
@@ -38,9 +194,11 @@
       section.dataset.elmCleanLibrary = "";
       section.className = "enhanced-elm-library";
       section.innerHTML = `
+        <div class="elm-clean-library-resizer" data-enhanced-elm-library-resizer role="separator" aria-label="Resize Library" aria-orientation="horizontal" tabindex="0"></div>
         <div class="elm-clean-library-heading">
           <span>Library</span>
           <div class="elm-clean-library-actions">
+            <button type="button" data-enhanced-elm-action="toggle-library" data-enhanced-elm-library-toggle title="Collapse Library" aria-label="Collapse Library" aria-expanded="true">expand_less</button>
             <button type="button" data-enhanced-elm-action="save-snapshot" title="Save local snapshot" aria-label="Save local snapshot">bookmark_add</button>
             <button type="button" data-enhanced-elm-action="export-markdown" title="Download Markdown" aria-label="Download Markdown">file_download</button>
           </div>
@@ -49,8 +207,11 @@
         <div data-enhanced-elm-library-list></div>`;
       history.after(section);
       section.querySelector("[data-enhanced-elm-library-search]").addEventListener("input", render);
-      section.addEventListener("click", (event) => void handleAction(event));
+      section.addEventListener("click", (event) => runAction(handleAction(event)));
+      section.querySelector("[data-enhanced-elm-library-resizer]").addEventListener("pointerdown", beginResize);
+      section.querySelector("[data-enhanced-elm-library-resizer]").addEventListener("keydown", resizeWithKeyboard);
     }
+    applyLibraryState(section);
     return section;
   }
 
@@ -58,6 +219,7 @@
     const section = document.querySelector("[data-enhanced-elm-library]");
     const list = section?.querySelector("[data-enhanced-elm-library-list]");
     if (!list) return;
+    applyLibraryState(section);
     const query = section.querySelector("[data-enhanced-elm-library-search]")?.value.trim().toLocaleLowerCase() ?? "";
     const workspace = store.value;
     const signature = JSON.stringify({ query, snapshots: workspace.snapshots, folders: workspace.folders });
@@ -164,6 +326,14 @@
     const control = event.target.closest("[data-enhanced-elm-action]");
     if (!control || !app.state.settings.enabled) return;
     const action = control.dataset.enhancedElmAction;
+    if (action === "toggle-library") {
+      event.preventDefault();
+      await store.mutate((draft) => {
+        draft.libraryCollapsed = !draft.libraryCollapsed;
+        return draft;
+      });
+      return;
+    }
     if (action === "save-snapshot") { event.preventDefault(); openSaveDialog(); }
     if (action === "export-markdown") {
       event.preventDefault();

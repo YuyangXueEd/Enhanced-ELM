@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Enhanced ELM",
-  "version": "0.1.2",
-  "description": "A local-first productivity enhancement for ELM New look conversations.",
+  "version": "0.1.3",
+  "description": "A local-first productivity enhancement for ELM conversations.",
   "permissions": ["storage"],
   "host_permissions": ["https://elm.edina.ac.uk/*"],
   "icons": {
@@ -24,7 +24,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://elm.edina.ac.uk/elm-new*"],
+      "matches": ["https://elm.edina.ac.uk/elm*"],
       "css": ["src/vendor/katex/katex.min.css", "src/content.css", "src/features.css"],
       "js": [
         "src/shared/settings.js",

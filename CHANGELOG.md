@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — 13 August 2026
+
+- Adapted Enhanced ELM to ELM's current `/elm` workspace after the New look route was retired.
+- Made the local Library independently scrollable and protected it from compression by a long native chat history.
+- Added a compact Library chevron plus an accessible horizontal resize handle: drag it up/down or use Arrow keys, Home, and End. The chosen height and collapsed state stay local to the browser.
+- Added a 100-chat Library stress fixture and release checks for long histories, keyboard resizing, collapse state, and common laptop viewport sizes.
+
 ## 0.1.2 — 11 August 2026
 
 - Replaced the numbered timeline panel with a fixed-width, left-edge conversation rail that remains compact even in long chats.

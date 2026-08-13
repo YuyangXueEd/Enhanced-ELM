@@ -2,11 +2,14 @@
   const { storageGet, storageSet, makeId } = globalThis.EnhancedELM.dom;
   const KEY = "enhancedElmWorkspace";
   const LEGACY_KEY = "elmCleanModeLibrary";
+  const MIN_LIBRARY_HEIGHT = 92;
+  const MAX_LIBRARY_HEIGHT = 440;
   const DEFAULT_WORKSPACE = Object.freeze({
-    version: 2,
+    version: 3,
     folders: [{ id: "inbox", name: "Inbox" }],
     snapshots: [],
-    bookmarks: []
+    bookmarks: [],
+    libraryCollapsed: false
   });
   let workspace = structuredClone(DEFAULT_WORKSPACE);
   let loaded = false;
@@ -17,18 +20,26 @@
     return { id: folder.id, name: folder.name.trim().slice(0, 60) || "Untitled" };
   }
 
+  function normaliseLibraryHeight(value) {
+    const height = Number(value);
+    if (!Number.isFinite(height) || height < MIN_LIBRARY_HEIGHT) return undefined;
+    return Math.round(Math.min(height, MAX_LIBRARY_HEIGHT));
+  }
+
   function normaliseWorkspace(value) {
     const folders = Array.isArray(value?.folders) ? value.folders.map(normaliseFolder).filter(Boolean) : [];
     if (!folders.some((folder) => folder.id === "inbox")) folders.unshift({ id: "inbox", name: "Inbox" });
     return {
-      version: 2,
+      version: 3,
       folders,
       snapshots: Array.isArray(value?.snapshots)
         ? value.snapshots.filter((snapshot) => snapshot && typeof snapshot.id === "string")
         : [],
       bookmarks: Array.isArray(value?.bookmarks)
         ? value.bookmarks.filter((bookmark) => bookmark && typeof bookmark.id === "string")
-        : []
+        : [],
+      libraryCollapsed: Boolean(value?.libraryCollapsed),
+      libraryHeight: normaliseLibraryHeight(value?.libraryHeight)
     };
   }
 

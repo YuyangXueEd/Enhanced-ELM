@@ -1,6 +1,6 @@
 # Verification checklist
 
-Run these checks after reloading the unpacked extension and refreshing `https://elm.edina.ac.uk/elm-new`.
+Run these checks after reloading the unpacked extension and refreshing `https://elm.edina.ac.uk/elm`.
 
 ## Fast static checks
 
@@ -28,6 +28,7 @@ Get-ChildItem -Recurse -File src -Filter *.js |
 - Test Math Repair with a fully delimited inline formula embedded in prose, a display formula embedded in Markdown, a `\\(...\\)` formula, a code-wrapped formula, and the split Celsius-range defect. Invalid or incomplete formulas must remain visible as original text.
 - With experimental Markdown compatibility enabled, test `$x^2+y^2=z^2$ and an escaped \\$7 amount.` in a normal paragraph. The formula and `$7` must render as expected; an ordinary code block and a normal native inline formula must remain unchanged.
 - Save a snapshot with a folder and tags. Search it, download it from the Library, and confirm its text remains in local extension storage after a page refresh.
+- With a long native chat history, confirm Library retains its own scrollable area and the native history scrolls independently. Drag the thin horizontal handle above **Library** up/down to resize it; test Arrow Up/Down, Home, and End on the focused handle. Use the Library chevron to collapse it to one row, refresh ELM, and confirm the chosen expanded/collapsed state and selected height persist locally. For a repeatable 100-chat stress case, open `tests/sidebar-library-stress.html` through a local server.
 - Attach one and multiple files. The full-width file bar must not reserve space below the composer; the lower-right paperclip must show the count, open its native summary on hover/focus/click, and its **View All** action must still open ELM's native file view.
 - Paste a multi-paragraph draft into the composer. The input must stop growing at its local limit, display a usable vertical scrollbar, keep the model/control row below the text, and remain editable without moving the composer out of its card.
 - Bookmark a user and ELM message, add notes, jump from the sidebar list, edit a note, then remove the bookmark.

@@ -5,10 +5,10 @@
 | Field | Release value |
 | --- | --- |
 | Name | Enhanced ELM |
-| Version | 0.1.2 |
+| Version | 0.1.3 |
 | Category | Productivity |
-| Short description | A local-first productivity enhancement for ELM New look conversations. |
-| Single purpose | Improve organisation, readability, local Markdown workflow, and recoverable math rendering in ELM New look. |
+| Short description | A local-first productivity enhancement for ELM conversations. |
+| Single purpose | Improve organisation, readability, local Markdown workflow, and recoverable math rendering in ELM. |
 | Required permission | `storage` only |
 | Host scope | `https://elm.edina.ac.uk/*` only |
 
@@ -17,7 +17,7 @@ Use the reviewed English and Chinese copy in [`STORE-LISTING.md`](STORE-LISTING.
 ## Package before upload
 
 1. Reload the unpacked extension and complete [`TESTING.md`](TESTING.md).
-2. Confirm `manifest.json` is `0.1.2`. Every subsequent store submission must use a strictly higher version.
+2. Confirm `manifest.json` is `0.1.3`. Every subsequent store submission must use a strictly higher version.
 3. Build a ZIP where the ZIP root contains `manifest.json`, `src/`, `assets/`, `README.md`, `LICENSE`, and `THIRD_PARTY_NOTICES.md`; do not ZIP an outer project folder.
 4. Exclude `.git/`, screenshots containing real conversations, temporary package sources, and development-only files.
 5. Keep KaTeX local in the package. Do not substitute a CDN script or remote dynamic code.

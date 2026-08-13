@@ -1,10 +1,10 @@
 # Enhanced ELM 测试者快速指南
 
-适用于 Chrome 及基于 Chromium 的浏览器。Enhanced ELM 仅作用于 ELM 的 **New look** 页面。
+适用于 Chrome 及基于 Chromium 的浏览器。Enhanced ELM 作用于当前的 ELM 工作区。
 
 ## 1. 获取并解压测试包
 
-下载 `Enhanced-ELM-0.1.2.zip`，将其解压到一个不会被移动或删除的文件夹。
+下载 `Enhanced-ELM-0.1.3.zip`，将其解压到一个不会被移动或删除的文件夹。
 
 解压后的文件夹内应能直接看到 `manifest.json`、`src` 和 `assets`。加载扩展时请选择这个文件夹，不要选择 ZIP 文件本身。
 
@@ -16,17 +16,16 @@
 4. 选择上一节中包含 `manifest.json` 的解压文件夹。
 5. 如有需要，点击扩展卡片上的图钉，将 **Enhanced ELM** 固定到工具栏。
 
-Chrome 应显示 Enhanced ELM `0.1.2`，且没有红色错误提示。
+Chrome 应显示 Enhanced ELM `0.1.3`，且没有红色错误提示。
 
 ## 3. 打开 ELM
 
-1. 登录 [ELM New look](https://elm.edina.ac.uk/elm-new)。
-2. 确认页面顶栏的 **Try our new look!** 已开启。
-3. 刷新页面一次。
+1. 登录 [ELM](https://elm.edina.ac.uk/elm)。
+2. 刷新页面一次。
 
 扩展默认启用。可点击工具栏中的 Enhanced ELM 图标，按需开关 Math Repair、Markdown tools 等选项。
 
-> ELM 的旧界面不在本扩展支持范围内。请始终使用 `/elm-new` 和 New look。
+> 请使用当前的 `/elm` 工作区；`/elm-new` 是正在退出的旧路由。
 
 ## 4. 建议测试项目
 
@@ -45,6 +44,6 @@ Chrome 应显示 Enhanced ELM `0.1.2`，且没有红色错误提示。
 2. 在 Enhanced ELM 卡片点击 **Reload / 重新加载**。
 3. 回到 ELM 并刷新页面。
 
-若页面没有变化，请依次确认：已使用 New look、已刷新页面、扩展处于启用状态，且没有同时启用其他会修改 ELM 数学渲染或页面样式的扩展。
+若页面没有变化，请依次确认：已使用 `/elm`、已刷新页面、扩展处于启用状态，且没有同时启用其他会修改 ELM 数学渲染或页面样式的扩展。
 
 反馈问题时，请附上浏览器版本、屏幕截图、使用的模型，以及可复现问题的最短操作步骤。请勿在截图中包含敏感对话内容。

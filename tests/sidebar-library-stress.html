@@ -1,0 +1,87 @@
+<!doctype html>
+<html class="elm-clean-mode" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Enhanced ELM Library stress fixture</title>
+    <link rel="stylesheet" href="../src/content.css">
+    <link rel="stylesheet" href="../src/features.css">
+    <style>
+      html, body { height: 100%; }
+      body { margin: 0; font: 14px/1.4 system-ui, sans-serif; }
+      .fixture { display: grid; grid-template-columns: 272px minmax(0, 1fr); height: 100%; }
+      mat-drawer.elm-sidebar { display: block; height: 100%; border-right: 1px solid #d9e1dc; }
+      .mat-drawer-inner-container, .sidemenu-container { height: 100%; }
+      .fixture-main { padding: 32px; background: #f4f6f4; }
+      mat-list, edh-elm-chat-history-menu-view { display: block; }
+      .fixture-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px; }
+      .fixture-nav span { display: grid; height: 36px; place-items: center; color: #5f6b65; }
+      .fixture-history-heading { padding: 8px 12px; border-top: 1px solid #d9e1dc; color: #5f6b65; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .fixture-chat { display: block; overflow: hidden; padding: 8px 12px; color: #17231f; text-overflow: ellipsis; white-space: nowrap; }
+      [data-enhanced-elm-sidebar-footer] { display: block; padding: 10px 12px; border-top: 1px solid #d9e1dc; color: #5f6b65; font-size: 11px; }
+    </style>
+  </head>
+  <body>
+    <div class="fixture">
+      <mat-drawer class="elm-sidebar">
+        <div class="mat-drawer-inner-container">
+          <div class="sidemenu-container">
+            <mat-list class="fixture-nav"><span>⚡</span><span>▤</span><span>▣</span><span>↶</span></mat-list>
+            <edh-elm-chat-history-menu-view>
+              <div class="fixture-history-heading">Recent chats — 100 items</div>
+              <div data-fixture-chat-list></div>
+            </edh-elm-chat-history-menu-view>
+            <footer data-enhanced-elm-sidebar-footer>Local ELM workspace data remains in this browser.</footer>
+          </div>
+        </div>
+      </mat-drawer>
+      <main class="fixture-main"><h1>Library stress fixture</h1><p>100 native chat entries; 12 saved local snapshots.</p><output data-fixture-result></output></main>
+    </div>
+    <script>
+      const snapshots = Array.from({ length: 12 }, (_, index) => ({
+        id: `snapshot-${index + 1}`,
+        title: `Saved research conversation ${index + 1}`,
+        folderId: "inbox",
+        tags: ["fixture"],
+        markdown: "# Fixture",
+        updatedAt: new Date(Date.now() - index * 86400000).toISOString()
+      }));
+      let workspace = {
+        snapshots,
+        folders: [{ id: "inbox", name: "Inbox" }],
+        libraryCollapsed: false
+      };
+      const listeners = new Set();
+      const notify = () => listeners.forEach((listener) => listener(workspace));
+      globalThis.EnhancedELM = {
+        state: { settings: { enabled: true } },
+        features: Object.create(null),
+        dom: { makeId: (prefix) => `${prefix}-fixture` },
+        markdown: { getConversationSnapshot: () => ({ title: "Fixture", messages: [], markdown: "" }) },
+        showToast: () => {},
+        workspaceStore: {
+          loaded: true,
+          get value() { return workspace; },
+          subscribe(callback) { listeners.add(callback); callback(); },
+          mutate: async (mutator) => { workspace = mutator(structuredClone(workspace)) ?? workspace; notify(); },
+          addFolder: async () => undefined
+        }
+      };
+      const chats = document.querySelector("[data-fixture-chat-list]");
+      const fragment = document.createDocumentFragment();
+      for (let index = 1; index <= 100; index += 1) {
+        const item = document.createElement("span");
+        item.className = "fixture-chat";
+        item.textContent = `Long native chat title ${index}: enough text to verify truncation and scrolling`;
+        fragment.append(item);
+      }
+      chats.append(fragment);
+    </script>
+    <script src="../src/features/workspace-library.js"></script>
+    <script>
+      EnhancedELM.features.library.init();
+      EnhancedELM.features.library.mark();
+      document.querySelector("[data-fixture-result]").textContent = "Fixture ready";
+    </script>
+  </body>
+</html>

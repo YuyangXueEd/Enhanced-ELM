@@ -3,7 +3,7 @@
     <img src="assets/icon-128.png" width="92" height="92" alt="Enhanced ELM 标志">
   </a>
   <h1>Enhanced ELM</h1>
-  <p><strong>为 ELM New look 打造的更安静、更好用的工作区。</strong></p>
+  <p><strong>为 ELM 打造的更安静、更好用的工作区。</strong></p>
   <p>本地优先的整理能力、易读的对话界面、保守的数学公式修复，以及实用的 Markdown 工具；不替换 ELM 原有的对话或模型逻辑。</p>
   <p>
     <a href="https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp"><img src="https://img.shields.io/badge/Chrome%20Web%20Store-Available-1f5c4b?style=flat-square&logo=googlechrome&logoColor=white" alt="可在 Chrome 网上应用店安装"></a>
@@ -22,13 +22,13 @@
 </div>
 
 <p align="center">
-  <img src="store-assets/promo-marquee-1400x560-v2.png" alt="Enhanced ELM — 为 ELM New look 打造的专注工作区" width="100%">
+  <img src="store-assets/promo-marquee-1400x560-v2.png" alt="Enhanced ELM — 为 ELM 打造的专注工作区" width="100%">
 </p>
 
-<p align="center"><sub>面向 ELM New look 的独立、本地优先增强扩展。</sub></p>
+<p align="center"><sub>面向 ELM 的独立、本地优先增强扩展。</sub></p>
 
 > [!IMPORTANT]
-> Enhanced ELM 仅在 [ELM **New look**](https://elm.edina.ac.uk/elm-new) 中生效。本项目是独立项目，与爱丁堡大学、EDINA 或 ELM 没有隶属、背书或运营关系。
+> Enhanced ELM 仅在当前的 [ELM 工作区](https://elm.edina.ac.uk/elm) 中生效。本项目是独立项目，与爱丁堡大学、EDINA 或 ELM 没有隶属、背书或运营关系。
 
 ## 小扩展，做实事
 
@@ -42,7 +42,7 @@ Enhanced ELM 让 ELM 更适合长期使用，同时始终由 ELM 决定对话、
   <img src="store-assets/screenshot-before-after-1280x800-v1.png" alt="原始 ELM 与 Enhanced ELM 的并列对比" width="960">
 </p>
 
-<p align="center"><sub>同一 ELM New look 工作区：左侧为原始 ELM，右侧为 Enhanced ELM。</sub></p>
+<p align="center"><sub>同一 ELM 工作区：左侧为原始 ELM，右侧为 Enhanced ELM。</sub></p>
 
 ## 能力一览
 
@@ -75,14 +75,14 @@ Enhanced ELM 让 ELM 更适合长期使用，同时始终由 ELM 决定对话、
 
 ### Chrome 网上应用店
 
-打开 [Chrome 网上应用店中的 Enhanced ELM](https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp)，点击 **添加至 Chrome**，然后打开或刷新 [ELM New look](https://elm.edina.ac.uk/elm-new)。
+打开 [Chrome 网上应用店中的 Enhanced ELM](https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp)，点击 **添加至 Chrome**，然后打开或刷新 [ELM](https://elm.edina.ac.uk/elm)。
 
 ### 手动 / 测试安装（Chrome 或 Edge）
 
 1. 下载[最新 Release](https://github.com/YuyangXueEd/Enhanced-ELM/releases/latest)并解压，或克隆本仓库。
 2. 打开 `chrome://extensions` 或 `edge://extensions`，启用**开发者模式**。
 3. 点击 **Load unpacked / 加载已解压的扩展程序**，选择解压后的 Release 目录（其中应包含 `manifest.json`）。
-4. 在 ELM 中切换到 **New look**，打开或刷新 `https://elm.edina.ac.uk/elm-new`，再从扩展弹窗中选择是否启用界面、数学修复或 Markdown 工具。
+4. 打开或刷新 `https://elm.edina.ac.uk/elm`，再从扩展弹窗中选择是否启用界面、数学修复或 Markdown 工具。
 
 修改源码后，请在扩展卡片上点击 **Reload / 重新加载**，再刷新 ELM。本项目无需构建，仓库目录本身也可以直接作为已解压扩展加载。
 
@@ -131,7 +131,7 @@ Get-ChildItem -Recurse -File src -Filter *.js |
 
 ### 自动发布 GitHub Release
 
-推送匹配的标签（例如 `v0.1.2`）后，工作流会自动打包扩展并发布 GitHub Release。标签、`manifest.json` 与 `CHANGELOG.md` 版本不一致时会拒绝发布；Chrome Web Store 和 Edge Add-ons 的上架仍需手动完成。完整步骤见 [RELEASING.md](docs/RELEASING.md)。
+推送匹配的标签（例如 `v0.1.3`）后，工作流会自动打包扩展并发布 GitHub Release。标签、`manifest.json` 与 `CHANGELOG.md` 版本不一致时会拒绝发布；Chrome Web Store 和 Edge Add-ons 的上架仍需手动完成。完整步骤见 [RELEASING.md](docs/RELEASING.md)。
 
 ## 许可证
 

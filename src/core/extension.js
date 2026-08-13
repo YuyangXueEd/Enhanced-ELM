@@ -33,6 +33,7 @@
   }
 
   globalThis.EnhancedELM = {
+    version: "0.1.3",
     state,
     features: Object.create(null),
     showToast,

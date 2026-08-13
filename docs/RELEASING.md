@@ -12,7 +12,7 @@ GitHub Actions packages and publishes a GitHub Release whenever a version tag in
    .\scripts\package-release.ps1 -Version X.Y.Z
    ```
 
-4. Test the unpacked extension in ELM **New look**.
+4. Test the unpacked extension in the current ELM workspace at `https://elm.edina.ac.uk/elm`.
 5. Commit the versioned source changes and push the branch.
 6. Create and push the matching tag:
 

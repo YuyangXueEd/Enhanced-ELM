@@ -3,7 +3,7 @@
     <img src="assets/icon-128.png" width="92" height="92" alt="Enhanced ELM logo">
   </a>
   <h1>Enhanced ELM</h1>
-  <p><strong>A calmer, more capable workspace for ELM New look.</strong></p>
+  <p><strong>A calmer, more capable workspace for ELM.</strong></p>
   <p>Local-first organisation, readable conversations, safe Math Repair, and practical Markdown tools — without replacing ELM's own chat or model logic.</p>
   <p>
     <a href="https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp"><img src="https://img.shields.io/badge/Chrome%20Web%20Store-Available-1f5c4b?style=flat-square&logo=googlechrome&logoColor=white" alt="Available in the Chrome Web Store"></a>
@@ -22,13 +22,13 @@
 </div>
 
 <p align="center">
-  <img src="store-assets/promo-marquee-1400x560-v2.png" alt="Enhanced ELM — a focused workspace for ELM New look" width="100%">
+  <img src="store-assets/promo-marquee-1400x560-v2.png" alt="Enhanced ELM — a focused workspace for ELM" width="100%">
 </p>
 
-<p align="center"><sub>Independent, local-first companion for ELM New look.</sub></p>
+<p align="center"><sub>Independent, local-first companion for ELM.</sub></p>
 
 > [!IMPORTANT]
-> Enhanced ELM runs on [ELM **New look**](https://elm.edina.ac.uk/elm-new) only. It is an independent project and is not affiliated with, endorsed by, or operated by The University of Edinburgh, EDINA, or ELM.
+> Enhanced ELM runs on the current [ELM workspace](https://elm.edina.ac.uk/elm). It is an independent project and is not affiliated with, endorsed by, or operated by The University of Edinburgh, EDINA, or ELM.
 
 ## A small extension with useful weight
 
@@ -42,7 +42,7 @@ Enhanced ELM makes the ELM interface easier to live in while leaving ELM in char
   <img src="store-assets/screenshot-before-after-1280x800-v1.png" alt="Side-by-side comparison of Original ELM and Enhanced ELM" width="960">
 </p>
 
-<p align="center"><sub>Same ELM New look workspace: Original ELM on the left, Enhanced ELM on the right.</sub></p>
+<p align="center"><sub>Same ELM workspace: Original ELM on the left, Enhanced ELM on the right.</sub></p>
 
 ## What it adds
 
@@ -75,14 +75,14 @@ Enhanced ELM makes the ELM interface easier to live in while leaving ELM in char
 
 ### Chrome Web Store
 
-Open [Enhanced ELM on the Chrome Web Store](https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp), select **Add to Chrome**, then open or refresh [ELM New look](https://elm.edina.ac.uk/elm-new).
+Open [Enhanced ELM on the Chrome Web Store](https://chromewebstore.google.com/detail/enhanced-elm/edofogjhmphlpkmldacibdbibfamnnbp), select **Add to Chrome**, then open or refresh [ELM](https://elm.edina.ac.uk/elm).
 
 ### Manual / tester install (Chrome or Edge)
 
 1. Download the [latest release](https://github.com/YuyangXueEd/Enhanced-ELM/releases/latest) and unzip it, or clone this repository.
 2. Open `chrome://extensions` or `edge://extensions`, then enable **Developer mode**.
 3. Select **Load unpacked** and choose the unzipped release folder (the folder containing `manifest.json`).
-4. Switch ELM to **New look**, open or refresh `https://elm.edina.ac.uk/elm-new`, and open the extension popup to choose the optional presentation, Math Repair, and Markdown tools.
+4. Open or refresh `https://elm.edina.ac.uk/elm`, then open the extension popup to choose the optional presentation, Math Repair, and Markdown tools.
 
 After a source-code change, use **Reload** on the extension card and refresh ELM. The project is buildless: the repository folder itself can be loaded as an unpacked extension.
 
@@ -131,7 +131,7 @@ The [architecture guide](docs/architecture.md) explains the data boundaries, and
 
 ### Release automation
 
-Pushing a matching tag such as `v0.1.2` packages the extension and publishes a GitHub Release automatically. The workflow refuses to release unless the tag, `manifest.json`, and `CHANGELOG.md` agree; store uploads remain manual. See [RELEASING.md](docs/RELEASING.md) for the complete checklist.
+Pushing a matching tag such as `v0.1.3` packages the extension and publishes a GitHub Release automatically. The workflow refuses to release unless the tag, `manifest.json`, and `CHANGELOG.md` agree; store uploads remain manual. See [RELEASING.md](docs/RELEASING.md) for the complete checklist.
 
 ## License
 

@@ -2,7 +2,7 @@
 
 Effective date: 7 August 2026
 
-Enhanced ELM is an independent browser extension that improves the local usability of ELM **New look** at `https://elm.edina.ac.uk/elm-new`. It is not affiliated with, endorsed by, or operated by The University of Edinburgh, EDINA, or ELM.
+Enhanced ELM is an independent browser extension that improves the local usability of ELM at `https://elm.edina.ac.uk/elm`. It is not affiliated with, endorsed by, or operated by The University of Edinburgh, EDINA, or ELM.
 
 ## Data the extension handles
 
