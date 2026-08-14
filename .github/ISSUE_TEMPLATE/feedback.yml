@@ -1,0 +1,109 @@
+name: Feedback or bug report
+description: Share an idea, report a problem, or help improve Enhanced ELM.
+title: "[Feedback]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Enhanced ELM.
+
+        Please do not include private conversations, student data, API keys, or screenshots containing personal information. A short, scrubbed example is enough.
+
+  - type: dropdown
+    id: report-type
+    attributes:
+      label: What would you like to share?
+      options:
+        - A bug or regression
+        - A feature idea
+        - A usability or visual improvement
+        - Documentation feedback
+        - Other feedback
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area is involved?
+      options:
+        - Math Repair or LaTeX rendering
+        - Markdown copy or download
+        - Local Library, folders, bookmarks, or notes
+        - Conversation timeline
+        - Sidebar, composer, layout, or theme
+        - Model family, model selection, or default model
+        - Attachments
+        - Extension settings
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened, or what would you like to improve?
+      description: Tell us the outcome you saw and why it was a problem or opportunity.
+      placeholder: A concise, privacy-safe summary.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce (for bugs)
+      description: List the smallest safe sequence that reproduces the issue. Use “Not applicable” for an idea.
+      placeholder: |
+        1. Open https://elm.edina.ac.uk/elm
+        2. …
+        3. …
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What should happen instead? For a feature idea, describe the most useful version of the outcome.
+    validations:
+      required: true
+
+  - type: input
+    id: elm-url
+    attributes:
+      label: ELM page or route
+      description: Usually https://elm.edina.ac.uk/elm. Do not include private chat identifiers.
+      placeholder: https://elm.edina.ac.uk/elm
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Enhanced ELM version
+      description: Find it in chrome://extensions or the extension card.
+      placeholder: "0.1.4"
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Google Chrome
+        - Microsoft Edge
+        - Other Chromium browser
+        - Not applicable
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Optional diagnostics or screenshot
+      description: Paste non-sensitive console errors or attach a fully scrubbed screenshot. Please remove chat text, names, document titles, and IDs first.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I refreshed ELM after reloading Enhanced ELM.
+          required: false
+        - label: I removed private, personal, student, research, and credential data.
+          required: true
+        - label: I understand Enhanced ELM is an independent project, not an official ELM or University of Edinburgh support channel.
+          required: true
