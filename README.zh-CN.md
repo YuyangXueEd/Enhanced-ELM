@@ -131,7 +131,7 @@ Get-ChildItem -Recurse -File src -Filter *.js |
 
 ### 自动发布 GitHub Release
 
-推送匹配的标签（例如 `v0.1.3`）后，工作流会自动打包扩展并发布 GitHub Release。标签、`manifest.json` 与 `CHANGELOG.md` 版本不一致时会拒绝发布；Chrome Web Store 和 Edge Add-ons 的上架仍需手动完成。完整步骤见 [RELEASING.md](docs/RELEASING.md)。
+推送匹配的标签（例如 `v0.1.4`）后，工作流会自动打包扩展并发布 GitHub Release。标签、`manifest.json` 与 `CHANGELOG.md` 版本不一致时会拒绝发布；Chrome Web Store 和 Edge Add-ons 的上架仍需手动完成。完整步骤见 [RELEASING.md](docs/RELEASING.md)。
 
 ## 许可证
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.4 — 14 August 2026
+
+- Made Math Repair compatible with ELM's current fragmented display-math DOM: a standalone opening `$$`, multiline TeX, and a line containing only `-` are reassembled safely before local KaTeX rendering.
+- Added strict safety boundaries: incomplete expressions remain unchanged, ordinary prose is not consumed as TeX, code blocks are excluded, and a malformed expression can never cross into another ELM message.
+- Updated Markdown export to recover TeX from ELM's current native MathML nodes as well as KaTeX, preventing rendered equations from being omitted or exported as a heading containing `$$`.
+- Added a six-check compatibility fixture covering the reported regression, empty-list recovery, cross-message safety, repaired-export fidelity, and native MathML export.
+
 ## 0.1.3 — 13 August 2026
 
 - Adapted Enhanced ELM to ELM's current `/elm` workspace after the New look route was retired.

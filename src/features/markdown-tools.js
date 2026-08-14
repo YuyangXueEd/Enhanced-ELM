@@ -2,6 +2,23 @@
   const app = globalThis.EnhancedELM;
   const { textFromNode, copyText } = app.dom;
 
+  function texFromNativeMath(element) {
+    return element.getAttribute("data-tex")?.trim()
+      || element.querySelector("annotation[encoding='application/x-tex']")?.textContent?.trim()
+      || undefined;
+  }
+
+  function isNativeDisplayMath(element) {
+    return element.matches(".katex-display, mjx-container[display='true'], math[display='block'], [data-math-display='true']")
+      || Boolean(element.closest(".katex-display, mjx-container[display='true'], [data-math-display='true']"));
+  }
+
+  function markdownForMath(element) {
+    const tex = texFromNativeMath(element);
+    if (!tex) return undefined;
+    return isNativeDisplayMath(element) ? `\n\n$$\n${tex}\n$$\n\n` : `$${tex}$`;
+  }
+
   function markdownForNode(node) {
     if (!node) return "";
     if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? "";
@@ -12,10 +29,8 @@
       const tex = element.dataset.enhancedElmMathSource;
       return element.classList.contains("enhanced-elm-math-display") ? `\n\n$$\n${tex}\n$$\n\n` : `$${tex}$`;
     }
-    if (element.classList.contains("katex")) {
-      const tex = element.querySelector("annotation[encoding='application/x-tex']")?.textContent?.trim();
-      if (!tex) return "";
-      return element.closest(".katex-display") ? `\n\n$$\n${tex}\n$$\n\n` : `$${tex}$`;
+    if (element.classList.contains("katex") || element.matches("mjx-container, math, [data-tex]")) {
+      return markdownForMath(element) ?? "";
     }
     const content = Array.from(element.childNodes).map(markdownForNode).join("");
     const tag = element.tagName.toLowerCase();

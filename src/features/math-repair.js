@@ -242,9 +242,10 @@
     const blocks = Array.from(root.querySelectorAll(FORMULA_BLOCK_SELECTOR)).filter(isFormulaBlock);
     for (const block of blocks) {
       if (repaired.has(block)) continue;
-      /* Use textContent rather than an individual text node: Markdown frequently
-       * inserts <br> or <span> elements inside one visual display expression. */
-      const formula = parseDelimitedFormula(block.textContent ?? "");
+      /* Work from all visible text in the block: Markdown frequently inserts
+       * <br> or <span> elements, while ELM may append a Copy button that must
+       * not become part of the TeX source. */
+      const formula = parseDelimitedFormula(formulaTextFromBlock(block));
       if (!formula?.displayMode) continue;
       const rendered = renderFormula(formula);
       if (!rendered) continue;
@@ -253,36 +254,97 @@
     }
   }
 
-  /* A display expression split into adjacent, formula-only Markdown blocks is
-   * safe to join. The previous flattened-node approach could see wrapper divs
-   * between adjacent <p> siblings and therefore never join the two delimiter
-   * halves. Iterate through actual sibling blocks instead. */
+  function formulaTextFromBlock(block) {
+    const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+    const pieces = [];
+    while (walker.nextNode()) {
+      const textNode = walker.currentNode;
+      const parent = textNode.parentElement;
+      if (parent?.closest("button, .response-icon, [data-enhanced-elm-ui]")) continue;
+      pieces.push(textNode.textContent ?? "");
+    }
+    return pieces.join("").trim();
+  }
+
+  function isCompleteDisplayFormula(value) {
+    const trimmed = value.trim();
+    return (trimmed.startsWith("$$") && trimmed.endsWith("$$") && trimmed.length > 4)
+      || (trimmed.startsWith("\\[") && trimmed.endsWith("\\]") && trimmed.length > 4);
+  }
+
+  function hasDisplayFormulaEnd(value) {
+    const trimmed = value.trim();
+    return trimmed.endsWith("$$") || trimmed.endsWith("\\]");
+  }
+
+  function blockFormulaFragment(block) {
+    const text = formulaTextFromBlock(block);
+    /* A bare hyphen inside a display formula is turned into an empty Markdown
+     * list item by ELM. Restore only that exact, unambiguous representation. */
+    if (!text && block.matches("li") && block.parentElement?.matches("ul")) return "-";
+    return text;
+  }
+
+  function isFormulaContinuation(value) {
+    /* A continuation must visibly contain TeX or a mathematical operator.
+     * This rejects ordinary prose such as "where phi is..." if ELM leaves a
+     * display delimiter unclosed, while accepting every line in a multiline
+     * equation (including a standalone minus sign). */
+    if (/[\\{}[\]()^_=+\-*/|<>%]/.test(value)) return true;
+    return /^(?:[+-]?\d+(?:\.\d+)?|[A-Za-z])$/.test(value.trim());
+  }
+
+  function removeFormulaBlocks(blocks, root) {
+    const listParents = new Set();
+    for (const block of blocks) {
+      const parent = block.parentElement;
+      if (parent?.matches("ul, ol")) listParents.add(parent);
+      repaired.add(block);
+      block.remove();
+    }
+    for (const list of listParents) {
+      if (list.isConnected && list !== root && !list.children.length) list.remove();
+    }
+  }
+
+  /* ELM's current Markdown view can split a display expression into many leaf
+   * blocks. In particular, a line containing only "-" becomes an empty <li>,
+   * so direct-sibling joins and a small block limit leave the rest of the TeX
+   * visible as plain text. Walk the ordered leaf blocks instead. The scan is
+   * deliberately bounded and accepts only TeX/operator fragments until it
+   * reaches the matching display delimiter. */
   function repairSplitDisplayBlocks(root) {
     const blocks = Array.from(root.querySelectorAll(FORMULA_BLOCK_SELECTOR)).filter(isFormulaBlock);
-    const blockSet = new Set(blocks);
-    for (const first of blocks) {
+    const maxBlocks = 64;
+    const maxCharacters = 12000;
+    for (let index = 0; index < blocks.length; index += 1) {
+      const first = blocks[index];
       if (repaired.has(first)) continue;
-      const firstText = first.textContent.trim();
-      if (!(firstText.startsWith("$$") || firstText.startsWith("\\[")) || firstText.endsWith("$$") || firstText.endsWith("\\]")) continue;
+      const firstText = blockFormulaFragment(first);
+      const startsDisplay = firstText.startsWith("$$") || firstText.startsWith("\\[");
+      /* A lone "$$" is an opening delimiter, not a complete expression. */
+      if (!startsDisplay || isCompleteDisplayFormula(firstText)) continue;
       const group = [first];
+      const response = first.closest(".response");
       let combined = firstText;
-      let next = first.nextElementSibling;
-      while (next && group.length < 4) {
-        if (!blockSet.has(next)) break;
-        const text = next.textContent.trim();
-        if (!text || text.length > 4000) break;
+      for (let nextIndex = index + 1; nextIndex < blocks.length && group.length < maxBlocks; nextIndex += 1) {
+        const next = blocks[nextIndex];
+        /* A missing closing delimiter must never borrow content from another
+         * user or ELM message, even when its first block happens to look like
+         * TeX. */
+        if (response && next.closest(".response") !== response) break;
+        const text = blockFormulaFragment(next);
+        if (!text || combined.length + text.length > maxCharacters) break;
+        const closesFormula = hasDisplayFormulaEnd(text);
+        if (!closesFormula && !isFormulaContinuation(text)) break;
         group.push(next);
         combined += `\n${text}`;
-        if (combined.endsWith("$$") || combined.endsWith("\\]")) break;
-        next = next.nextElementSibling;
+        if (closesFormula) break;
       }
       const rendered = renderFormula(parseDelimitedFormula(combined));
       if (!rendered) continue;
       group.at(-1).after(rendered);
-      for (const block of group) {
-        repaired.add(block);
-        block.remove();
-      }
+      removeFormulaBlocks(group, root);
     }
   }
 

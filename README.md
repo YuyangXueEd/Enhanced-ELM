@@ -131,7 +131,7 @@ The [architecture guide](docs/architecture.md) explains the data boundaries, and
 
 ### Release automation
 
-Pushing a matching tag such as `v0.1.3` packages the extension and publishes a GitHub Release automatically. The workflow refuses to release unless the tag, `manifest.json`, and `CHANGELOG.md` agree; store uploads remain manual. See [RELEASING.md](docs/RELEASING.md) for the complete checklist.
+Pushing a matching tag such as `v0.1.4` packages the extension and publishes a GitHub Release automatically. The workflow refuses to release unless the tag, `manifest.json`, and `CHANGELOG.md` agree; store uploads remain manual. See [RELEASING.md](docs/RELEASING.md) for the complete checklist.
 
 ## License
 

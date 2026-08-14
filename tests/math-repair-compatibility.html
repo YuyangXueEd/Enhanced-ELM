@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Enhanced ELM math compatibility fixture</title>
+    <link rel="stylesheet" href="../src/vendor/katex/katex.min.css">
+    <style>
+      body { font: 16px/1.5 system-ui, sans-serif; margin: 32px; max-width: 900px; }
+      .pass { color: #12683f; } .fail { color: #a61b1b; }
+      .markdown { border: 1px solid #d8e1dc; border-radius: 10px; padding: 20px; }
+    </style>
+  </head>
+  <body>
+    <h1>Math-repair compatibility fixture</h1>
+    <p id="result">Running…</p>
+    <edh-elm-query>
+      <article class="response response-ai">
+        <div class="markdown" id="unclosed-formula">
+          <p>$$</p>
+          <p>\alpha + \beta</p>
+          <p>where this deliberately has no closing display delimiter.</p>
+        </div>
+      </article>
+      <article class="response response-ai">
+        <div class="markdown" id="broken-formula">
+          <h1>$$</h1>
+          <p>\frac{\partial \mathcal{J}}{\partial p_k}</p>
+          <p>=</p>
+          <ul><li></li></ul>
+          <p>\int_0^T w(\delta)\,\phi\!\left(\frac{d(\delta)}{2\sigma}\right)</p>
+          <p>\frac{a_k(\delta)}{2\sigma d(\delta)}\,d\delta,</p>
+          <p>$$</p>
+          <p>where $\phi$ is the standard normal density.</p>
+        </div>
+      </article>
+      <article class="response response-ai">
+        <div class="markdown" id="native-math">
+          <p>Native formula:</p>
+          <mjx-container display="true"><math display="block"><semantics><annotation encoding="application/x-tex">E = mc^2</annotation></semantics></math></mjx-container>
+        </div>
+      </article>
+    </edh-elm-query>
+    <script>
+      globalThis.EnhancedELM = {
+        dom: {
+          textFromNode: (node) => node?.textContent?.replace(/\s+/g, " ").trim() || "",
+          copyText: async () => {}
+        },
+        features: Object.create(null),
+        state: { settings: { mathRepair: true, markdownTools: true, markdownCompatibility: false } }
+      };
+    </script>
+    <script src="../src/vendor/katex/katex.min.js"></script>
+    <script src="../src/features/math-repair.js"></script>
+    <script src="../src/features/markdown-tools.js"></script>
+    <script>
+      EnhancedELM.features.mathRepair.mark();
+      const repaired = document.querySelector("#broken-formula [data-enhanced-elm-math-repair]");
+      const repairedTex = repaired?.dataset.enhancedElmMathSource || "";
+      const exportedBroken = EnhancedELM.markdown.markdownForNode(document.querySelector("#broken-formula"));
+      const exportedNative = EnhancedELM.markdown.markdownForNode(document.querySelector("#native-math"));
+      const checks = [
+        ["reassembles the fragmented derivative", repairedTex.includes("\\frac{\\partial \\mathcal{J}}{\\partial p_k}") && repairedTex.includes("\\int_0^T")],
+        ["restores the standalone minus sign", repairedTex.includes("=\n-\n\\int_0^T")],
+        ["removes the empty list created by Markdown", !document.querySelector("#broken-formula ul")],
+        ["does not join an unclosed formula across messages", document.querySelector("#unclosed-formula").textContent.includes("$$") && !document.querySelector("#unclosed-formula [data-enhanced-elm-math-repair]")],
+        ["exports repaired LaTeX without a heading marker", exportedBroken.includes("$$\n\\frac{\\partial") && !exportedBroken.includes("# $$")],
+        ["exports current native MathML", exportedNative.includes("$$\nE = mc^2\n$$")]
+      ];
+      const failed = checks.filter(([, passed]) => !passed);
+      const result = document.querySelector("#result");
+      result.className = failed.length ? "fail" : "pass";
+      result.textContent = failed.length
+        ? `Failed: ${failed.map(([label]) => label).join("; ")}`
+        : `Passed ${checks.length}/${checks.length} compatibility checks.`;
+    </script>
+  </body>
+</html>
