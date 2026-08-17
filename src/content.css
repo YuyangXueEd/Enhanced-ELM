@@ -27,6 +27,9 @@
   --elm-clean-code-function: #3d5f86;
   --elm-clean-code-literal: #775224;
   --elm-clean-web-active-surface: #e8f2ed;
+  /* Keep selection visually distinct from the quiet blockquote surface. */
+  --elm-clean-selection-surface: #b8dccb;
+  --elm-clean-selection-ink: #10291f;
   --elm-clean-disabled-ink: #6f7973;
   --elm-clean-composer-shadow: 0 10px 26px rgb(23 35 31 / 8%);
   --elm-clean-sidebar-width: 272px;
@@ -75,6 +78,8 @@
   --elm-clean-code-function: #a9cdea;
   --elm-clean-code-literal: #e4bd7f;
   --elm-clean-web-active-surface: #294634;
+  --elm-clean-selection-surface: #376d53;
+  --elm-clean-selection-ink: #f7fbf8;
   --elm-clean-disabled-ink: #7d8a81;
   --elm-clean-composer-shadow: 0 10px 26px rgb(0 0 0 / 30%);
 }
@@ -101,6 +106,8 @@
     --elm-clean-code-function: #a9cdea;
     --elm-clean-code-literal: #e4bd7f;
     --elm-clean-web-active-surface: #294634;
+    --elm-clean-selection-surface: #376d53;
+    --elm-clean-selection-ink: #f7fbf8;
     --elm-clean-disabled-ink: #7d8a81;
     --elm-clean-composer-shadow: 0 10px 26px rgb(0 0 0 / 30%);
   }
@@ -817,8 +824,8 @@
 }
 
 :root.elm-clean-mode ::selection {
-  background: var(--elm-clean-web-active-surface);
-  color: var(--elm-clean-ink);
+  background: var(--elm-clean-selection-surface);
+  color: var(--elm-clean-selection-ink);
 }
 
 :root.elm-clean-compact-conversation edh-elm-chat-history-menu-view [role="option"] {

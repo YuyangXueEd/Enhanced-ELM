@@ -18,6 +18,7 @@ Get-ChildItem -Recurse -File src -Filter *.js |
 
 - Toggle Enhanced ELM, Math Repair, Markdown tools, guidance hiding, and the experimental Markdown compatibility setting from the popup; refresh after each important state change.
 - In light and dark ELM themes, check readable text, disabled web search, selected web search, code blocks, and the composer. Code foreground must remain readable against its code surface with no inherited white Prism text or text shadow in light mode.
+- In both themes, select ordinary response text and text inside a quote block. The selection colour must be clearly deeper than the quote-block surface and retain readable foreground text.
 - Confirm ELM's native UI and reading font are preserved, source code uses CaskaydiaCove Mono, and Material icons plus KaTeX continue using their dedicated fonts.
 - Check responsive desktop layouts at approximately 1280×832, 1512×982, and 1728×1117 CSS pixels (or equivalent browser zoom). The composer must remain inside the card bottom, the reading column must remain comfortable, and sidebar/timeline/attachment dock controls must not overlap.
 - Open and close the sidebar. In the closed state, the reading column and composer should use the recovered width with no grey rail.

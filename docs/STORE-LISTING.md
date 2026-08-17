@@ -1,4 +1,4 @@
-# Store listing copy — Enhanced ELM 0.1.4
+# Store listing copy — Enhanced ELM 0.1.5
 
 Use this document as the single source of truth for Chrome Web Store and Microsoft Edge Add-ons metadata. Do not claim affiliation with The University of Edinburgh, EDINA, or ELM.
 
@@ -7,7 +7,7 @@ Use this document as the single source of truth for Chrome Web Store and Microso
 | Field | Value |
 | --- | --- |
 | Product name | Enhanced ELM |
-| Version | 0.1.4 |
+| Version | 0.1.5 |
 | Category | Productivity |
 | Homepage | `https://github.com/YuyangXueEd/Enhanced-ELM` |
 | Support URL | `https://github.com/YuyangXueEd/Enhanced-ELM/issues` |
@@ -81,5 +81,5 @@ Use only scrubbed demonstration conversations. Never include student, research, 
 
 1. Publish the GitHub repository so the privacy-policy and support URLs are publicly reachable.
 2. Set a monitored publisher support email in each dashboard.
-3. Upload the validated `Enhanced-ELM-0.1.4.zip` with `manifest.json` at its root.
+3. Upload the validated `Enhanced-ELM-0.1.5.zip` with `manifest.json` at its root.
 4. Use deferred/staged publication and re-test the reviewed package before public release.

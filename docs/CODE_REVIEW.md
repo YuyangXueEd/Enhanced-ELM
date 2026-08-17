@@ -1,6 +1,6 @@
-# 0.1.4 code review
+# 0.1.5 code review
 
-Reviewed: 14 August 2026
+Reviewed: 17 August 2026
 
 ## Findings resolved
 
@@ -24,15 +24,17 @@ Reviewed: 14 August 2026
 | ELM can split one valid display formula into multiple Markdown blocks, including an empty list item for a standalone minus sign. | Math Repair now reassembles bounded, formula-only leaf blocks in document order and validates the recovered TeX with local KaTeX. |
 | A malformed opening delimiter could previously be misread as closed, or potentially continue into another response. | A lone `$$` is treated as an opener; repair stops at prose, code, length limits, or a different `.response` boundary. |
 | Markdown export missed ELM's current native MathML formulas. | Export now reads the standard `application/x-tex` annotation from MathML/MathJax-style containers as well as KaTeX. |
+| Text selection was too close to the quote-block surface, making selection state hard to see. | Added dedicated light/dark selection colour tokens while retaining the original quote-block background and accent border. |
 
 ## Checks completed
 
-- `manifest.json` parses, contains **Enhanced ELM** version **0.1.4**, has only the `storage` permission, and all declared resources exist.
+- `manifest.json` parses, contains **Enhanced ELM** version **0.1.5**, has only the `storage` permission, and all declared resources exist.
 - `node --check` passes for every non-vendor JavaScript file.
 - A no-network scan finds no `fetch`, XHR, WebSocket, beacon, or HTTP URL in first-party source code.
 - Bundled KaTeX validated four representative inputs: Celsius range, quadratic formula, aligned equations, and summation.
 - The reported Jensen/Ziv-Zakai derivative with a multiline display fence and standalone minus sign passes strict local KaTeX rendering.
 - `tests/math-repair-compatibility.html` covers the six regression cases: fragmented display recovery, empty-list minus recovery, unclosed-formula safety, cross-message isolation, repaired Markdown export, and native MathML export.
+- Live ELM Playwright checks confirm the selection style in both themes: light `#b8dccb` against quote blocks `#edf3ef`, dark `#376d53` against quote blocks `#27332c`; the original light theme was restored and the console remained clean.
 - On the live ELM workspace, verified clean prompt/reply previews, rail placement with the sidebar open and closed, timeline jump visibility, current-marker state, no horizontal overflow, and no console errors.
 - The 120-message/60-turn `tests/timeline-stress.html` fixture exercises the rail's bounded vertical marker list without affecting packaged extension files.
 - The 100-chat/12-snapshot `tests/sidebar-library-stress.html` fixture confirms independent Library/history scrolling, bounded drag resizing, keyboard Home/End controls, collapsed state, no horizontal overflow, and visible footer at 1280 × 800 and 1512 × 982.

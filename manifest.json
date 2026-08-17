@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Enhanced ELM",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A local-first productivity enhancement for ELM conversations.",
   "permissions": ["storage"],
   "host_permissions": ["https://elm.edina.ac.uk/*"],

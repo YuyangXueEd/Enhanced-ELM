@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5 — 17 August 2026
+
+- Made text selection visibly distinct from ELM quote blocks without changing the calm quote-block surface: a deeper mint selection in light mode and a readable forest-green selection in dark mode.
+- Verified the computed selection and quote-block colours in live ELM light and dark themes, then restored the original user theme.
+
 ## 0.1.4 — 14 August 2026
 
 - Made Math Repair compatible with ELM's current fragmented display-math DOM: a standalone opening `$$`, multiline TeX, and a line containing only `-` are reassembled safely before local KaTeX rendering.
